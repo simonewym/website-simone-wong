@@ -17,7 +17,7 @@ LIVE — Occasionally writing and sharing reflections on identity, expansion of 
 Links: https://medium.com/@s1mwong , https://s1mwong.medium.com/
 
 ### @not.elsewhere (Instagram)
-Image: images/personal-instagram-not-elsewhere.png
+Image: images/personal-instagram-not-elsewhere.jpg
 
 LIVE — Occasionally sharing my portrait & figure drawings. Started this mainly to practice sharing 'unfinished' work with the world as a meditative way to counteract unhealthy perfectionism.
 
@@ -31,7 +31,7 @@ A newsletter that asks what it means to be human with fun & odd bits curated fro
 Link: https://motleysphere.substack.com/
 
 ### intent: paced thoughts (Blog, SoMe)
-Image: images/personal-intent-paced-thoughts.jpg
+Image: images/personal-intent-paced-thoughts.png
 
 Blogging (WordPress, Medium) & Social Media (Instagram, Twitter) project (2017-2019) where I shared thoughts on personal development and minimalistic lifestyle during my time in Berlin and Copenhagen; also as a way to build writing & marketing experience during my studies.
 

@@ -8,7 +8,7 @@ This folder contains everything pulled from your Wix site (`https://simonewongg.
 - `images/` — every image from the site, downloaded at full original resolution (not the small cropped thumbnails Wix serves by default):
   - `simone-headshot.png`, `simone-braze-conference.jpeg` (Home)
   - `portfolio-weatherpromise.jpg`, `portfolio-jokr-logo.webp`, `portfolio-slowly.png`, `portfolio-global-bubble-parade.png`, `portfolio-ladyplans.jpg` (Portfolio)
-  - `personal-medium.webp`, `personal-instagram-not-elsewhere.png`, `personal-motleysphere-sphere.png`, `personal-intent-paced-thoughts.jpg`, `personal-hk-summer-2016.jpg` (Personal Projects)
+  - `personal-medium.webp`, `personal-instagram-not-elsewhere.jpg`, `personal-motleysphere-sphere.png`, `personal-intent-paced-thoughts.png`, `personal-hk-summer-2016.jpg` (Personal Projects)
 - `content-export/` — the raw extracted text/links for each page as Markdown, in case you want the source content without the HTML wrapper (e.g. to paste into a different site builder or CMS).
 
 ## Site structure found on Wix
