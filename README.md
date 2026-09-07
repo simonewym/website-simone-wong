@@ -4,8 +4,10 @@ This folder contains everything pulled from your Wix site (`https://simonewongg.
 
 ## What's in here
 
-- `index.html`, `portfolio.html`, `research.html`, `personal-projects.html` — the four pages of your site, rebuilt as plain static HTML with the same content, images, and links as the Wix version. `style.css` gives them a clean, minimal shared look (not a pixel copy of the Wix theme — Wix's own theme/CSS isn't portable outside Wix, so this is a fresh simple design you can restyle freely).
-- `images/` — every image from the site, downloaded at full original resolution (not the small cropped thumbnails Wix serves by default):
+- `index.html`, `portfolio.html`, `research.html`, `personal-projects.html` — the four pages of your site, rebuilt as plain static HTML with the same content, images, and links as the Wix version.
+- `style.css` — a single stylesheet reproducing the Wix visual identity (monospace type, lavender header band, violet actions, lime accent on Personal Projects, the wave and pixel dividers), rebuilt mobile-first with a dark theme and accessibility fixes.
+- `DESIGN.md` — the extracted design system: colours, type scale, spacing, components, and a table of every place the rebuild deliberately diverges from Wix (and why).
+- `images/` — every image from the site, downloaded at full original resolution (not the small cropped thumbnails Wix serves by default), plus `divider-wave.svg` and `divider-pixel.svg`, the two decorative dividers extracted from the Wix page:
   - `simone-headshot.png`, `simone-braze-conference.jpeg` (Home)
   - `portfolio-weatherpromise.jpg`, `portfolio-jokr-logo.webp`, `portfolio-slowly.png`, `portfolio-global-bubble-parade.png`, `portfolio-ladyplans.jpg` (Portfolio)
   - `personal-medium.webp`, `personal-instagram-not-elsewhere.jpg`, `personal-motleysphere-sphere.png`, `personal-intent-paced-thoughts.png`, `personal-hk-summer-2016.jpg` (Personal Projects)
@@ -29,7 +31,7 @@ This folder contains everything pulled from your Wix site (`https://simonewongg.
 - **The "Schedule a call" and "Email me" buttons** already just link out to `cal.com` and a `mailto:` link — these work as-is, no Wix dependency.
 - **Contact/consultation booking** is already external (Cal.com), so nothing to migrate there.
 - **Analytics** — if you had Wix Analytics or a tracking pixel installed on the Wix site, that's Wix-only and isn't reflected here. Add Google Analytics/Plausible/etc. separately if you want visitor stats on the new site.
-- **SEO basics** — I didn't carry over Wix's auto-generated meta tags/sitemap; the new pages have basic `<title>` tags but you may want to add meta descriptions and an Open Graph image if SEO matters to you.
+- **SEO basics** — each page now has a `<title>`, a meta description and Open Graph title/description. Still worth adding: an Open Graph *image* (a 1200×630 preview card) and a `sitemap.xml`.
 - **Domain** — if `simonewongg.wixsite.com` (or a custom domain attached to it) is what people currently visit, remember to update/redirect that once the GitHub Pages site is live, and cancel/downgrade the Wix plan once you're confident the new site is complete.
 
 ## Verification

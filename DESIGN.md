@@ -85,7 +85,23 @@ All four pages share: lavender header band → divider → white content, single
 | Research | Research | 5 entries: two-line underlined title, then `date \| institution` | Wave / lavender |
 | Personal Projects | Personal Projects | 5 entries: 159px thumb left, title + `LIVE` badge + blurb | Pixel / lime |
 
-Responsive behaviour isn't observable from the Wix output (it ships separate mobile layouts), so the rebuild below adds a single breakpoint at 820px that collapses the image rails and drops the container to fluid width — **inferred, not copied**.
+Responsive behaviour isn't observable from the Wix output (it ships separate mobile layouts), so the rebuild is **mobile-first and inferred, not copied**: a single fluid column by default, thumbnails going 96px → 159px at 640px, and the Home portrait rail moving from a two-up grid to the original's 233px side rail at 900px. Type scales fluidly with `clamp()` between those bounds.
+
+## Deliberate Departures From The Original
+
+The clone above is what Wix ships. The implementation in this repo diverges from it in the following places, each to fix a measured problem rather than a matter of taste. Anything not listed here is unchanged.
+
+| Change | From | To | Why |
+|---|---|---|---|
+| Body weight | 700 | 400 | Bold monospace flattens letterform differences and measurably hurts multi-line reading. 700 is kept for headings, titles, buttons and emphasis, so the texture survives. |
+| Button fill | `#7a5df5` | `#6544e8` | White label on the original was **4.46:1**, under the 4.5:1 floor for 15px text. Now 5.92:1. |
+| Inactive nav | `#666666` | `#565663` | **3.74:1** on lavender — a clear AA failure. Now 4.71:1, tinted violet to stay in family. |
+| Line height | 24px fixed | 1.65 unitless | Scales with the fluid type ramp instead of tightening as text grows. |
+| Dividers | `background-image` | CSS `mask` + `background-color` | The wave's white fill was hardcoded, so it could not follow a theme. As a mask, one asset paints itself in whatever colour the theme needs. |
+
+Every foreground/background pair in both themes now clears WCAG AA (lowest ratio: 4.54 light, 5.49 dark).
+
+Additions the original had no equivalent for: a dark theme via `prefers-color-scheme`, a skip link, visible `:focus-visible` rings, `aria-current="page"` on the active nav item, 44px minimum touch targets, a `prefers-reduced-motion` guard, per-page meta descriptions and Open Graph tags, and a small footer carrying a persistent contact affordance.
 
 ## Content Style
 
@@ -94,12 +110,12 @@ Voice is warm and first-person, with emoji used as list bullets and in the CTA (
 ## Agent Build Instructions
 
 1. Set the monospace stack on `:root` and inherit it everywhere. Do not introduce a second family.
-2. Body copy is `15px/24px` at **weight 700**. This looks like a mistake and is not — it's the site's texture.
-3. Build the header as a `.page-head` band in `--lavender`, containing `.site-nav`, `h1`, and an optional `.intro-note`, with the divider as a `::after` strip of fixed height using `background: url(...) repeat-x 50% 100%`.
-4. Keep every corner square and add no shadows or borders. Visual separation comes from the colour bands and whitespace only.
+2. Body copy is weight 400 on a fluid 15→16px ramp at `line-height: 1.65`; reserve 700 for headings, titles, buttons and emphasis.
+3. Build the header as a `.page-head` band in `--band`, containing `.site-nav`, `h1`, and an optional `.intro-note`, with the divider as a `::after` strip of fixed height using `mask-image` so it can be painted per theme.
+4. Keep every corner square and add no shadows. Visual separation comes from the colour bands and whitespace; the only rules are the hairline dividers in Research and the footer.
 5. Use inline `<span class="hl">` highlights rather than padded pills for tags and badges.
-6. Personal Projects sets `.pixel` on the header to swap divider and highlight colour via a CSS custom property override.
-7. Omit a footer.
+6. Personal Projects sets `.pixel` on the header and `.lime` on `<body>` — the body class is what carries the accent override into `<main>`.
+7. Define every colour as a token on `:root` and redefine only the tokens inside the `prefers-color-scheme: dark` block. Never give a colour its sole definition inside a media query.
 
 ## Rerun Inputs
 workflow: firecrawl-website-design-clone

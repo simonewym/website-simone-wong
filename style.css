@@ -1,319 +1,480 @@
 /* ==========================================================================
-   simonewongg.com — styles derived from the Wix original.
-   Tokens and layout metrics documented in DESIGN.md.
+   simonewongg.com
+
+   Visual identity is inherited from the Wix original (see DESIGN.md):
+   monospace throughout, lavender header band, violet actions, lime accent
+   on Personal Projects, square corners, no shadows.
+
+   Departures from that original are deliberate and documented inline —
+   each one fixes a measured accessibility or readability problem.
    ========================================================================== */
 
 :root {
-  --lavender: #d4caff;
-  --violet: #7a5df5;
+  /* ---- Brand ---------------------------------------------------------- */
+  --band: #d4caff;          /* header band */
+  --lavender: #d4caff;      /* highlighter fill */
+  --lime: #dfff79;          /* Personal Projects accent */
+
+  /* Wix shipped #7a5df5 here, which gives a white label only 4.46:1 —
+     below the 4.5:1 floor for 15px text. One shade down clears it at 5.9:1. */
+  --violet: #6544e8;
   --violet-deep: #5b46b8;
+
+  /* ---- Ink ------------------------------------------------------------ */
   --ink: #383838;
-  --ink-muted: #666666;
+  /* Wix used #666 for inactive nav: 3.74:1 on lavender, a clear AA failure.
+     Tinted slightly violet to stay in family while reaching 4.7:1. */
+  --ink-muted: #565663;
   --ink-tag: #545454;
-  --lime: #dfff79;
-  --white: #ffffff;
 
-  /* Per-page accent: overridden on .page-head.pixel */
-  --accent-hl: var(--lavender);
+  --bg: #ffffff;
+  --focus: #1c1240;
 
-  --mono: "Lucida Console", "Lucida Sans Typewriter", "Courier New", monospace;
+  /* ---- Type ----------------------------------------------------------- */
+  --mono: "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono",
+          "Courier New", monospace;
+
+  --fs-body: clamp(0.9375rem, 0.9rem + 0.25vw, 1rem);        /* 15 → 16 */
+  --fs-lead: clamp(1rem, 0.95rem + 0.5vw, 1.25rem);          /* 16 → 20 */
+  --fs-h1:   clamp(1.75rem, 1.25rem + 2.4vw, 2.5rem);        /* 28 → 40 */
+
+  /* ---- Space (4px base) ----------------------------------------------- */
+  --s-1: 0.5rem;
+  --s-2: 0.75rem;
+  --s-3: 1rem;
+  --s-4: 1.5rem;
+  --s-5: 2rem;
+  --s-6: 3rem;
+  --s-7: 4rem;
 
   --container: 980px;
-  --text-col: 624px;
+  --measure: 68ch;          /* readable line length for body prose */
+  --tap: 44px;              /* minimum touch target */
 }
 
-* { box-sizing: border-box; }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --band: #221d33;
+    --lavender: #cdc1ff;
+    /* Bright enough to read as violet on the dark ground (3.4:1 against the
+       page, clearing the 3:1 non-text floor) while keeping the white label
+       above 4.5:1. A lighter violet fails the label. */
+    --violet: #6a4aee;
+    --violet-deep: #c3b0ff;
+    --ink: #e9e6f4;
+    --ink-muted: #a7a1bd;
+    --ink-tag: #2a2438;
+    --bg: #14121c;
+    --focus: #cdc1ff;
+  }
+}
 
-html { -webkit-text-size-adjust: 100%; }
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
-  background: var(--white);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--mono);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 24px;
+  font-size: var(--fs-body);
+  /* The Wix original set body copy at weight 700. Bold monospace flattens
+     letterform differences and hurts multi-line reading, so prose drops to
+     400 here; 700 is retained for headings, titles and emphasis. */
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-wrap: break-word;
 }
+
+img { max-width: 100%; display: block; }
 
 .container {
   width: 100%;
   max-width: var(--container);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(1rem, 4vw, 1.5rem);
+}
+
+/* Visible only once focused — keyboard users can jump the nav. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10;
+  padding: var(--s-2) var(--s-3);
+  background: var(--violet);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
 }
 
 /* --------------------------------------------------------------------------
    Header band + decorative divider
+
+   The dividers are applied as CSS masks rather than background images, so a
+   single asset can be painted in whatever colour the current theme needs.
+   The wave is painted in the page background (it reads as content bleeding
+   up into the band); the pixel pattern is painted lime.
    -------------------------------------------------------------------------- */
 
 .page-head {
   position: relative;
-  background: var(--lavender);
-  padding-bottom: 65px; /* room for the divider strip */
+  background: var(--band);
+  padding-bottom: 65px;
 }
 
 .page-head::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: auto 0 0 0;
   height: 65px;
-  background: url("images/divider-wave.svg") repeat-x 50% 100%;
-  background-size: 1233px 100%;
+  background-color: var(--bg);
+  -webkit-mask-image: url("images/divider-wave.svg");
+          mask-image: url("images/divider-wave.svg");
+  -webkit-mask-repeat: repeat-x;
+          mask-repeat: repeat-x;
+  -webkit-mask-position: 50% 100%;
+          mask-position: 50% 100%;
+  -webkit-mask-size: 1233px 100%;
+          mask-size: 1233px 100%;
 }
 
-/* Personal Projects variant: lime pixel-cross divider + lime highlights.
-   The accent override lives on <body> so it reaches <main> too. */
-body.lime { --accent-hl: var(--lime); }
+/* Personal Projects: lime pixel-cross strip over a solid lime band. */
+body.lime { --lavender: var(--lime); --ink-tag: #3d3a1f; }
 
-.page-head.pixel { padding-bottom: 88px; }
+.page-head.pixel { padding-bottom: calc(88px + 26px); }
 
 .page-head.pixel::after {
+  bottom: 26px;
   height: 88px;
-  background-image: url("images/divider-pixel.svg");
-  background-size: 2815px 100%;
+  background-color: var(--lime);
+  -webkit-mask-image: url("images/divider-pixel.svg");
+          mask-image: url("images/divider-pixel.svg");
+  -webkit-mask-size: 2815px 100%;
+          mask-size: 2815px 100%;
 }
 
-/* The lime band that sits under the pixel divider on the Wix original */
-.page-head.pixel + main { border-top: 26px solid var(--lime); }
+.page-head.pixel::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 26px;
+  background: var(--lime);
+}
 
 /* Nav ------------------------------------------------------------------- */
 
 .site-nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  height: 81px;
+  gap: var(--s-2) var(--s-4);
+  padding: var(--s-2) 0;
 }
 
 .site-nav .links {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 0 var(--s-4);
 }
 
-.site-nav a {
+.site-nav .links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
   color: var(--ink-muted);
-  font-weight: 400;
-  line-height: 42px;
   text-decoration: none;
+  transition: color 120ms ease;
 }
 
-.site-nav a:hover { color: var(--ink); }
-.site-nav a.active { color: var(--ink); }
+.site-nav .links a:hover,
+.site-nav .links a[aria-current="page"] {
+  color: var(--ink);
+}
+
+.site-nav .links a[aria-current="page"] {
+  font-weight: 700;
+  box-shadow: inset 0 -2px 0 currentColor;
+}
 
 .site-nav .btn-cta {
   flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 198px;
-  height: 38px;
-  padding: 0 16px;
+  min-height: var(--tap);
+  padding: 0 var(--s-4);
   background: var(--violet);
-  border: 0;
-  border-radius: 0;
-  color: var(--white);
+  color: #fff;
   font-weight: 700;
-  line-height: 21px;
   text-decoration: none;
+  transition: background-color 120ms ease, transform 120ms ease;
 }
 
-.site-nav .btn-cta:hover { background: var(--violet-deep); }
+.site-nav .btn-cta:hover {
+  background: var(--violet-deep);
+}
+
+.site-nav .btn-cta:active { transform: translateY(1px); }
 
 /* Hero copy inside the band --------------------------------------------- */
 
 .page-head h1 {
-  margin: 22px 0 0;
+  margin: var(--s-4) 0 0;
   color: var(--violet-deep);
-  font-size: 40px;
+  font-size: var(--fs-h1);
   font-weight: 700;
-  line-height: 44px;
+  line-height: 1.1;
+  /* Long page titles must not force a sideways scroll on narrow screens. */
+  overflow-wrap: anywhere;
 }
 
 .page-head .tagline {
-  margin: 6px 0 0;
-  max-width: var(--text-col);
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 28px;
+  margin: var(--s-1) 0 0;
+  max-width: var(--measure);
+  font-size: var(--fs-lead);
+  line-height: 1.35;
 }
 
 .page-head .intro-note {
-  margin: 6px 0 0;
-  max-width: var(--text-col);
-  font-weight: 400;
+  margin: var(--s-1) 0 0;
+  max-width: var(--measure);
 }
 
 /* --------------------------------------------------------------------------
    Content
    -------------------------------------------------------------------------- */
 
-main { padding: 40px 0 96px; }
+main {
+  display: block;
+  padding: var(--s-6) 0 var(--s-7);
+}
 
 a { color: var(--violet-deep); }
 
-.text-col { max-width: var(--text-col); }
+h2, h3 { font-weight: 700; }
 
-.text-col p { margin: 0 0 24px; }
+.text-col { max-width: var(--measure); }
+.text-col > p { margin: 0 0 var(--s-4); }
 
-/* Inline highlighter-pen treatment for tags and badges */
+/* Highlighter-pen treatment for tags and badges — flat, no pill. */
 .hl {
-  background: var(--accent-hl);
+  background: var(--lavender);
   color: var(--ink-tag);
-  font-weight: 400;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* Home: prose column + portrait rail ------------------------------------ */
 
 .split {
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  align-items: start;
 }
 
 .split .rail {
-  flex: none;
-  width: 233px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-3);
 }
 
 .split .rail img {
-  display: block;
-  width: 233px;
-  height: 167px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
 .offer-list {
-  margin: 0 0 24px;
+  margin: 0 0 var(--s-4);
   padding: 0;
   list-style: none;
 }
 
+.offer-list li { margin-bottom: var(--s-1); }
+
 .cta-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 8px;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
-  height: 38px;
-  padding: 0 18px;
+  min-height: var(--tap);
+  padding: 0 var(--s-4);
+  font-weight: 700;
   text-decoration: none;
-  line-height: 21px;
+  transition: background-color 120ms ease, transform 120ms ease;
 }
 
-.btn.primary { background: var(--violet); color: var(--white); }
+.btn:active { transform: translateY(1px); }
+
+.btn.primary { background: var(--violet); color: #fff; }
 .btn.primary:hover { background: var(--violet-deep); }
 
 .btn.secondary {
-  background: var(--accent-hl);
+  background: var(--lavender);
   color: var(--ink-tag);
 }
 
-/* Entry rows: 159px thumbnail + text ------------------------------------ */
+.btn.secondary:hover { filter: brightness(0.95); }
+
+/* Entry rows: thumbnail + text ----------------------------------------- */
 
 .entry {
-  display: flex;
-  align-items: flex-start;
-  gap: 37px;
-  margin-bottom: 56px;
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: var(--s-3) var(--s-4);
+  align-items: start;
+  margin-bottom: var(--s-6);
 }
 
 .entry > img {
-  flex: none;
-  width: 159px;
-  height: 159px;
+  width: 96px;
+  height: 96px;
   object-fit: cover;
 }
 
-.entry-body { max-width: 460px; }
+.entry-body { min-width: 0; }
 
 .entry-body h3 {
-  margin: 0 0 8px;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 24px;
+  margin: 0 0 var(--s-1);
+  font-size: var(--fs-body);
+  line-height: 1.4;
 }
 
-.entry-body h3 a {
-  color: var(--violet-deep);
-  text-decoration: underline;
-}
+.entry-body h3 a { text-decoration: underline; }
 
-.entry-body p { margin: 0 0 12px; }
+.entry-body > p {
+  margin: 0 0 var(--s-2);
+  max-width: 60ch;
+}
 
 .tag-list {
-  margin: 0 0 12px;
+  margin: var(--s-2) 0 0;
   padding: 0;
   list-style: none;
 }
 
-.tag-list li { line-height: 24px; }
+.tag-list li { margin-bottom: 2px; }
 
 /* Research entries: no thumbnail --------------------------------------- */
 
 .research-item {
-  max-width: var(--text-col);
-  margin-bottom: 48px;
+  max-width: var(--measure);
+  margin-bottom: var(--s-5);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
 }
+
+.research-item:last-child { border-bottom: 0; }
 
 .research-item h3 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 24px;
+  font-size: var(--fs-body);
+  line-height: 1.5;
 }
 
-.research-item h3 a {
-  color: var(--violet-deep);
-  text-decoration: underline;
-}
-
-.research-item .sub {
-  margin: 0;
-  color: var(--violet-deep);
-  text-decoration: underline;
-}
+.research-item h3 a { text-decoration: underline; }
 
 .research-item .meta {
-  margin: 8px 0 0;
-  font-weight: 400;
+  margin: var(--s-1) 0 0;
+  color: var(--ink-muted);
+}
+
+/* Footer --------------------------------------------------------------- */
+
+.site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  padding: var(--s-5) 0;
+  color: var(--ink-muted);
+}
+
+.site-footer .inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: var(--ink-muted);
+}
+
+.site-footer a:hover { color: var(--ink); }
+
+.site-footer .links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--s-4);
 }
 
 /* --------------------------------------------------------------------------
-   Small screens — inferred, not present in the Wix output
+   Wider viewports — the original's two-column metrics reappear here
    -------------------------------------------------------------------------- */
 
-@media (max-width: 820px) {
-  .page-head h1 { font-size: 30px; line-height: 34px; }
-  .page-head .tagline { font-size: 17px; line-height: 24px; }
-
-  .site-nav {
-    height: auto;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 16px 0;
+@media (min-width: 640px) {
+  .entry {
+    grid-template-columns: 159px 1fr;
+    gap: var(--s-5);
   }
 
-  .site-nav .links { gap: 18px; }
-  .site-nav a { line-height: 28px; }
+  .entry > img { width: 159px; height: 159px; }
+}
 
-  .split { flex-direction: column; gap: 28px; }
-  .split .rail { flex-direction: row; width: 100%; }
-  .split .rail img { width: 50%; height: 150px; }
+@media (min-width: 900px) {
+  .site-nav { padding: var(--s-3) 0; }
 
-  .entry { gap: 20px; }
-  .entry > img { width: 96px; height: 96px; }
-  .entry-body { max-width: none; }
+  .page-head h1 { margin-top: var(--s-5); }
+
+  .split {
+    grid-template-columns: minmax(0, 1fr) 233px;
+    gap: var(--s-6);
+  }
+
+  .split .rail {
+    grid-template-columns: 1fr;
+    gap: var(--s-3);
+  }
+
+  .split .rail img {
+    width: 233px;
+    aspect-ratio: auto;
+    height: 167px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion preferences
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
