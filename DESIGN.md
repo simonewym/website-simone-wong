@@ -1,124 +1,116 @@
-# DESIGN.md: simonewongg.wixsite.com/simone
+# DESIGN.md: simonewongg.com
 
-## Source
-- URL: https://simonewongg.wixsite.com/simone (+ `/portfolio`, `/research`, `/personal-projects`)
-- Capture date: 2026-09-01
-- Evidence: live DOM inspection via headless browser — computed styles on leaf text nodes, element geometry, and the two decorative divider SVGs extracted verbatim from their `background-image` data URIs. Screenshots taken at 1265px viewport width for visual reference.
-- Note: tokens were read from the **inner styled `<span>`/`<p>` nodes**, not Wix's wrapper elements. Wrappers report misleading values (default link blue `#0000EE`, and a `baskervillemtw01` font that never loads); the values below are what actually renders.
+Source of truth for the site's visual system. The earlier version of this
+file documented the design extracted from the Wix original; that extraction
+is preserved in git history (`237ea70`) and is no longer what the site uses.
 
-## Design Summary
+## Positioning
 
-A deliberately low-fi, personal-site aesthetic: **everything is monospace**, set on a soft lavender-and-white ground with one saturated violet as the action colour. The signature move is a full-bleed decorative divider between the page header and the content — a four-layer wave on most pages, swapped for a lime-green pixel-cross pattern on Personal Projects, which also swaps the highlight colour from lavender to lime. Body copy is set at **700 weight** (not 400) which gives the whole site its slightly chunky, typewriter-ish texture. Layout is a single narrow text column with a fixed-size image rail — no cards, no shadows, no rounded corners, no borders.
+Simone Wong — CRM, lifecycle and retention marketing consultant, Berlin. The site is built to
+attract **mobile-first, subscription products**, and the copy says so in the
+first sentence a visitor reads. Her name and title are the hero; there is deliberately no sales headline. Services and target clients follow immediately underneath.
 
-## Design Tokens
+## Identity
 
-### Colors
+**Deep forest green.** Chosen over olive as the primary because olive goes
+muddy in large fills, while a deep green frames the page with authority and
+maps literally onto her discipline — *growth*. Olive survives as the
+secondary (tints, chips, the availability dot). It is also a genuinely
+underused colour in the CRM/SaaS space, which is wall-to-wall blue and
+purple, so it does the "stand out" job on its own.
 
-| Role | Value | Usage |
+Three type voices, each with a strict role:
+
+| Voice | Family | Role |
 |---|---|---|
-| `--lavender` | `#d4caff` | Header band background; inline highlight on Projects tags |
-| `--violet` | `#7a5df5` | "Get in touch" button fill |
-| `--violet-deep` | `#5b46b8` | Page `h1`, project/section titles, links |
-| `--ink` | `#383838` | Body copy, active nav item |
-| `--ink-muted` | `#666666` | Inactive nav items |
-| `--ink-tag` | `#545454` | Text inside highlighted tags/badges |
-| `--lime` | `#dfff79` | Personal Projects: divider fill, `LIVE` badge highlight |
-| `--white` | `#ffffff` | Content background; wave divider fill |
+| Display | Instrument Serif (400, italic) | Name, statement, section titles. Never body. |
+| Reading | Inter (400/500/600) | Everything you read. |
+| Label | JetBrains Mono (400/500) | Eyebrows, metadata, chips, clock, footer legal. |
 
-There is no dark mode, no border colour, and no shadow token — the site uses none.
+The serif carries the personality; the mono carries the "tech-forward"
+signal; Inter stays out of the way.
 
-### Typography
+## Tokens
 
-Single family throughout:
+### Colour
 
-```css
-font-family: "Lucida Console", "Lucida Sans Typewriter", "Courier New", monospace;
-```
+| Token | Light | Dark | Role |
+|---|---|---|---|
+| `--green-900` | `#0b2a20` | same | Page frame around the sheet |
+| `--green-800` | `#0f3d2e` | same | Services block fill |
+| `--olive-500` | `#7f8f4a` | same | Availability dot, pulse |
+| `--olive-200` | `#e3e8cf` | `#2a3324` | Chip / badge tint |
+| `--sprout` | `#c8f169` | same | Accent — pill hover, selection, one italic word. Sparingly. |
+| `--paper` | `#f4f3ee` | `#101613` | The sheet |
+| `--paper-2` | `#ebeae3` | `#161d19` | Nav track, thumb placeholders, hover fills |
+| `--ink` | `#14201a` | `#ecefe9` | Text |
+| `--ink-2` | `#5b665f` | `#a3ada6` | Secondary text |
+| `--display` | `--green-800` | `#b7dcc6` | Name, page titles, wordmark dot |
+| `--em` | `--green-700` | `#9fd4b8` | Italic accents, hovers, focus ring |
+| `--btn-bg` | `--green-800` | `#21775a` | Active nav pill |
+| `--accent` | `--sprout` | same | Primary call to action, with `--green-900` text. Distinct from the nav pill, still in family. |
+| `--signal-text` / `--signal-dot` | `#bf4410` / `#e5322d` | `#ff8a4c` / `#ff5a4f` | The availability line, and nothing else |
 
-| Element | Size | Weight | Line height | Colour |
-|---|---|---|---|---|
-| Page `h1` | 40px | 700 | 44px | `--violet-deep` |
-| Home tagline | 20px | 400 | normal | `--ink` |
-| Body / list / section head | 15px | **700** | 24px | `--ink` |
-| Intro note under `h1` | 15px | 400 | 24px | `--ink` |
-| Nav item | 15px | 400 | 42px | `--ink` active / `--ink-muted` inactive |
-| Button label | 15px | 700 | 21px | `--white` |
-| Project title | 15px | 700 | 24px | `--violet-deep`, underlined |
+`--display`, `--em` and `--btn-bg` exist because deep green disappears on a
+dark ground (1.5:1). Every foreground/background pair in both themes clears
+WCAG AA; the dark button clears the 3:1 non-text floor against the page.
 
-Letter-spacing is `normal` everywhere. No uppercase transforms.
+### Type scale
 
-### Spacing And Layout
+Fluid, via `clamp()`:
 
-- Page container: **980px**, centred.
-- Text column inside it: **624px** (leaves a right-hand rail for imagery).
-- Home portrait images: **233px** wide, `object-fit: cover`, stacked in the right rail.
-- Project/personal-project thumbnails: **159×159px**, `object-fit: cover`, in a left rail with text starting ~196px in.
-- Nav band height: **81px**. Hero band height: **~200px**.
-- Divider strip: **65px** tall (wave) / **88px** tall (pixel).
-- Border radius: **0** everywhere. No shadows, no borders, no card surfaces.
+- `--fs-name` `clamp(3.5rem, 16vw, 17rem)` — the name spans ~74% of the viewport at any width
+- `--fs-h2` `clamp(2.25rem, 1.6rem + 3vw, 4.5rem)`
+- `--fs-stmt` `clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem)` — hero statement
+- `--fs-lead`, `--fs-body`, `--fs-sm` (0.875rem), `--fs-xs` (0.75rem, mono labels)
 
-### Dividers
+### Space, shape
 
-Both are `repeat-x`, positioned `50% 100%`, sitting at the bottom of the lavender header band. Saved verbatim as site assets:
-
-- `images/divider-wave.svg` — four layered paths, fill `#FFFFFF`, tile width `1233px`. Used on Home, Projects, Research.
-- `images/divider-pixel.svg` — single path of 8.8px squares forming plus/cross shapes, fill `#DFFF79`, tile width `2815px`. Used on Personal Projects, followed by a solid lime band before the white content.
+- 8-step spacing scale `--s-1` (0.5rem) → `--s-8` (7rem).
+- `--frame` `clamp(6px, 1.2vw, 16px)` — the green border around the sheet.
+- `--radius` 18px for the sheet, blocks and cards; 12–14px for thumbnails; `--pill` for anything interactive.
+- Container 1320px; gutter `clamp(1rem, 4vw, 3rem)`.
+- Hairlines only (`--line`, 12% ink). No shadows.
 
 ## Components
 
-- **Nav** — plain text links, left-aligned, ~30px apart, no underline. Active item is `--ink`, the rest `--ink-muted`.
-- **Button** (`Get in touch 👋`) — solid `--violet`, white 700 label, square corners, no border, ~198×38px. Sits top-right in the nav band. Links to `https://cal.com/simone-wong/15min`.
-- **Header block** — lavender band containing nav + `h1` + one line of intro copy, closed by the divider.
-- **Media row** — image rail plus text column; images are hard-cropped squares with no frame.
-- **Tag list** (Projects) — one item per line, each wrapped in an inline `--lavender` highlight with `--ink-tag` text. Reads like a highlighter pen, not a pill: no padding, no radius.
-- **`LIVE` badge** (Personal Projects) — same inline-highlight treatment in `--lime`.
-- **No footer.** Pages simply end after the last content block.
+- **Sheet** — the paper page inset in the green frame. Everything lives inside it.
+- **Top bar** — sticky frosted glass (translucent paper gradient, 26px blur, saturate 190%, a highlight edge on top); mono wordmark, pill nav with a filled active state, live Berlin clock, primary CTA.
+- **Hero** — eyebrow → serif statement (left) / status + bio + CTAs (right) → the name across the full width at the bottom of the first viewport, with mono metadata beside it.
+- **Services block** — deep green, drifting radial glow, tilted paper pills that straighten and turn sprout on hover. The one deliberately playful element.
+- **Focus cards** — numbered, hairline-bordered, lift on hover. Three: mobile-first, subscription, cross-functional.
+- **Work cards** — 4:3 image, title + ↗, mono chips. Image scales on hover.
+- **Case rows** (Projects, Personal) — number / 160px thumb / serif title + blurb + chips.
+- **Paper rows** (Research) — number / title / mono meta, hairline-separated.
+- **Orbit** (About → Background) — a short blurb beside a hand-drawn-feeling constellation: the word *Simone* in italic serif at the centre, four thin arms of different lengths at irregular angles, a small circle and an uppercase mono label at the end of each (Education / CRM stack / Code / AI tools). No ring. The whole thing drifts ±7° on a 36s loop and each arm sways ±3° on its own timing; labels counter-rotate so they always read upright. Tapping a node grows the centre into a card with that branch's pills and one line while the other arms fade; tap again, ×, or Esc to collapse. All motion stops under reduced motion.
+- **Browser window** (Off the clock) — the section sits inside a fake browser: traffic-light dots, a URL bar reading `simonewong.com/off-the-clock`, and the light switch in the toolbar. Lights off darkens the whole window like a browser in dark mode.
+- **Note for AI assistants** — a dashed, collapsed `<details>` near the footer written for an LLM screening freelancers: who, best fit, tools, an honest "less of a fit", and where to verify. Backed by `/llms.txt` and JSON-LD `Person` data in the head, which is the part that actually signals AI fluency rather than claiming it.
+- **Light switch** (Off the clock) — the section starts collapsed with a hint. Flipping the lights *off* turns the block into a dark room (deep green, lamp glow) and expands the after-hours cards via a `grid-template-rows: 0fr → 1fr` transition. `aria-expanded` on the switch; collapsed content is `inert`. Without JS it's simply expanded.
+- **Footer** — oversized serif "Let's build *something that sticks.*", link row, a primary Book-a-call button, mono legal with an `llms.txt` link.
 
-## Page Patterns
+## Motion
 
-All four pages share: lavender header band → divider → white content, single column, left aligned.
+All motion is progressive enhancement and switches off under
+`prefers-reduced-motion`.
 
-| Page | `h1` | Content shape | Accent |
-|---|---|---|---|
-| Home | Simone Wong | Prose + emoji offer list + CTA, portrait rail right | Wave / lavender |
-| Projects | Projects | 5 entries: 159px thumb left, title + blurb + tag list | Wave / lavender |
-| Research | Research | 5 entries: two-line underlined title, then `date \| institution` | Wave / lavender |
-| Personal Projects | Personal Projects | 5 entries: 159px thumb left, title + `LIVE` badge + blurb | Pixel / lime |
+- **Load** — hero blocks blur-and-rise in sequence; the name arrives letter by letter (38ms stagger, slight rotation, blur → sharp).
+- **Scroll** — `.reveal` elements blur-and-rise once via IntersectionObserver; `[data-stagger]` groups offset their children.
+- **Page-to-page** — `@view-transition { navigation: auto }` gives a crossfade-and-slide between the four pages in supporting browsers, with no JS.
+- **Micro** — link underlines that wipe out on hover, arrows that nudge, buttons that compress on press, work images that ease in scale over 900ms.
+- **Ambient** — the services glow drifts on a 24s loop; the availability dot pulses.
 
-Responsive behaviour isn't observable from the Wix output (it ships separate mobile layouts), so the rebuild is **mobile-first and inferred, not copied**: a single fluid column by default, thumbnails going 96px → 159px at 640px, and the Home portrait rail moving from a two-up grid to the original's 233px side rail at 900px. Type scales fluidly with `clamp()` between those bounds.
+Easing is a single `cubic-bezier(0.22, 1, 0.36, 1)` for anything entering, so everything feels like it belongs to one system.
 
-## Deliberate Departures From The Original
+## Content rules
 
-The clone above is what Wix ships. The implementation in this repo diverges from it in the following places, each to fix a measured problem rather than a matter of taste. Anything not listed here is unchanged.
+- Name and title are always the largest things on the home page.
+- The hero is a person, not a pitch: bio, buttons, then availability. Industry preference is stated as a preference ("Preferred, not required") right before Projects. B2C only; the AI note and llms.txt say so explicitly.
+- Services are listed as capabilities in her own words; nothing invented.
+- Photos are placeholders pending new headshots; slots are 4:5 in About and 4:3 in cards.
+- Personality is stated, not implied: tech and psychology, and the question of building technology that leaves people better off. The Research lede ties the academic work to the same thread.
 
-| Change | From | To | Why |
-|---|---|---|---|
-| Body weight | 700 | 400 | Bold monospace flattens letterform differences and measurably hurts multi-line reading. 700 is kept for headings, titles, buttons and emphasis, so the texture survives. |
-| Button fill | `#7a5df5` | `#6544e8` | White label on the original was **4.46:1**, under the 4.5:1 floor for 15px text. Now 5.92:1. |
-| Inactive nav | `#666666` | `#565663` | **3.74:1** on lavender — a clear AA failure. Now 4.71:1, tinted violet to stay in family. |
-| Line height | 24px fixed | 1.65 unitless | Scales with the fluid type ramp instead of tightening as text grows. |
-| Dividers | `background-image` | CSS `mask` + `background-color` | The wave's white fill was hardcoded, so it could not follow a theme. As a mask, one asset paints itself in whatever colour the theme needs. |
+## Still to do
 
-Every foreground/background pair in both themes now clears WCAG AA (lowest ratio: 4.54 light, 5.49 dark).
-
-Additions the original had no equivalent for: a dark theme via `prefers-color-scheme`, a skip link, visible `:focus-visible` rings, `aria-current="page"` on the active nav item, 44px minimum touch targets, a `prefers-reduced-motion` guard, per-page meta descriptions and Open Graph tags, and a small footer carrying a persistent contact affordance.
-
-## Content Style
-
-Voice is warm and first-person, with emoji used as list bullets and in the CTA (`👋`, `🚀`, `🧪`, `🔩`, `🔊`, `👥`) and casual asides in parentheses or with `:)`. Headings are plain nouns ("Projects", "Research"), never marketing-speak. Project entries lead with the name, give one sentence of what the thing is, then list the contribution as terse noun phrases.
-
-## Agent Build Instructions
-
-1. Set the monospace stack on `:root` and inherit it everywhere. Do not introduce a second family.
-2. Body copy is weight 400 on a fluid 15→16px ramp at `line-height: 1.65`; reserve 700 for headings, titles, buttons and emphasis.
-3. Build the header as a `.page-head` band in `--band`, containing `.site-nav`, `h1`, and an optional `.intro-note`, with the divider as a `::after` strip of fixed height using `mask-image` so it can be painted per theme.
-4. Keep every corner square and add no shadows. Visual separation comes from the colour bands and whitespace; the only rules are the hairline dividers in Research and the footer.
-5. Use inline `<span class="hl">` highlights rather than padded pills for tags and badges.
-6. Personal Projects sets `.pixel` on the header and `.lime` on `<body>` — the body class is what carries the accent override into `<main>`.
-7. Define every colour as a token on `:root` and redefine only the tokens inside the `prefers-color-scheme: dark` block. Never give a colour its sole definition inside a media query.
-
-## Rerun Inputs
-workflow: firecrawl-website-design-clone
-source_url: https://simonewongg.wixsite.com/simone
-target_stack: static HTML + single CSS file (GitHub Pages)
-output: DESIGN.md
+- New headshots (4:5) and a hero-worthy photo for the About section.
+- An Open Graph image (1200×630) so shared links get a preview card.
+- A favicon in the green.

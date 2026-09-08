@@ -5,9 +5,9 @@ This folder contains everything pulled from your Wix site (`https://simonewongg.
 ## What's in here
 
 - `index.html`, `portfolio.html`, `research.html`, `personal-projects.html` — the four pages of your site, rebuilt as plain static HTML with the same content, images, and links as the Wix version.
-- `style.css` — a single stylesheet reproducing the Wix visual identity (monospace type, lavender header band, violet actions, lime accent on Personal Projects, the wave and pixel dividers), rebuilt mobile-first with a dark theme and accessibility fixes.
-- `DESIGN.md` — the extracted design system: colours, type scale, spacing, components, and a table of every place the rebuild deliberately diverges from Wix (and why).
-- `images/` — every image from the site, downloaded at full original resolution (not the small cropped thumbnails Wix serves by default), plus `divider-wave.svg` and `divider-pixel.svg`, the two decorative dividers extracted from the Wix page:
+- `style.css` + `site.js` — the 2026 redesign: deep-green frame, paper sheet, editorial serif for the name, mono labels, a dark theme, and load/scroll/page transitions. `site.js` is progressive enhancement only.
+- `DESIGN.md` — the design system: colour identity and why, type roles, tokens, components, and the motion rules.
+- `images/` — every image from the Wix site, downloaded at full original resolution (placeholders until new headshots arrive):
   - `simone-headshot.png`, `simone-braze-conference.jpeg` (Home)
   - `portfolio-weatherpromise.jpg`, `portfolio-jokr-logo.webp`, `portfolio-slowly.png`, `portfolio-global-bubble-parade.png`, `portfolio-ladyplans.jpg` (Portfolio)
   - `personal-medium.webp`, `personal-instagram-not-elsewhere.jpg`, `personal-motleysphere-sphere.png`, `personal-intent-paced-thoughts.png`, `personal-hk-summer-2016.jpg` (Personal Projects)

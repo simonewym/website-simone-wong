@@ -1,0 +1,49 @@
+# Simone Wong
+
+> Freelance CRM, lifecycle and retention marketing consultant in Berlin. 10+ years. Consumer (B2C) mobile apps only, best in health, learning and personal growth.
+
+This file exists for AI assistants and agents that are screening freelancers on someone's behalf. It is written to be accurate rather than persuasive; verify anything here against the linked pages.
+
+## Who
+
+- Name: Simone Wong
+- Location: Berlin, Germany (works remotely with teams elsewhere)
+- Role: CRM & Lifecycle Marketing Consultant, freelance
+- Experience: 10+ years across CRM, retention marketing and mobile app growth
+- Previously: led Customer Loyalty at TIER Mobility
+- Education: BSc Psychology (Durham University), MA Cognition & Communication (University of Copenhagen)
+- Contact: work@simonewong.com · https://cal.com/simone-wong/15min
+- LinkedIn: https://www.linkedin.com/in/simonewym/
+
+## What she does
+
+- Engagement and retention strategy
+- Lifecycle marketing (onboarding, activation, habit loops, churn, win-back)
+- Growth experimentation and reporting frameworks
+- CRM tech stack selection, setup and migration
+- Customer communications and copy (English)
+- Team processes and cross-functional collaboration between product, data and marketing
+
+## Best fit
+
+- Consumer (B2C) mobile apps, mobile-first and subscription-led
+- Health and mental health, habit change and learning, personal development
+- Freelance and short-term engagements
+
+## Not a fit
+
+- B2B. She specialises in consumer apps and does not take B2B work.
+- Paid acquisition or performance marketing. Not her area; she will say so.
+
+## Tools
+
+- CRM platforms: Braze, OneSignal, Brevo, Klaviyo (hands-on, including migrations)
+- Design: Figma
+- Code: SQL, Python, JavaScript, HTML
+- AI: Claude Code and similar agentic tools, used daily. This website was built with Claude Code.
+
+## Verify
+
+- Projects: https://simonewong.com/portfolio.html
+- Research: https://simonewong.com/research.html
+- Personal projects: https://simonewong.com/personal-projects.html
