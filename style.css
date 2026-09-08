@@ -462,88 +462,6 @@ a { color: inherit; }
   letter-spacing: -0.02em;
 }
 
-/* Services block — deep green, tilted pills ---------------------------- */
-
-.services {
-  position: relative;
-  background: var(--green-800);
-  color: var(--on-green);
-  border-radius: var(--radius);
-  padding: var(--s-6) var(--gutter) var(--s-5);
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.services::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background:
-    radial-gradient(60% 60% at 80% 20%, color-mix(in srgb, var(--green-700) 90%, transparent), transparent 60%),
-    radial-gradient(50% 50% at 10% 90%, color-mix(in srgb, var(--olive-500) 35%, transparent), transparent 60%);
-  z-index: -1;
-  animation: drift 24s var(--ease-io) infinite alternate;
-}
-
-@keyframes drift {
-  to { transform: translate3d(4%, -3%, 0) rotate(3deg); }
-}
-
-.services .mono { color: var(--on-green-2); }
-
-.services-title {
-  margin: var(--s-5) 0 0;
-  font-family: var(--serif);
-  font-size: var(--fs-h2);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.services-title em { font-style: italic; color: var(--sprout); }
-
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 8px;
-  margin: var(--s-5) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.pills li {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--tap);
-  padding: 0 1.1rem;
-  border-radius: var(--pill);
-  background: var(--paper);
-  color: var(--green-900);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  white-space: nowrap;
-  transform: rotate(var(--r, 0deg));
-  transition: transform 420ms var(--ease-out), background-color 300ms var(--ease-out), color 300ms var(--ease-out);
-  cursor: default;
-}
-
-.pills li:hover {
-  transform: rotate(0deg) scale(1.04);
-  background: var(--sprout);
-}
-
-.pills li:nth-child(6n+1) { --r: -4deg; }
-.pills li:nth-child(6n+2) { --r: 3deg; }
-.pills li:nth-child(6n+3) { --r: -2deg; }
-.pills li:nth-child(6n+4) { --r: 5deg; }
-.pills li:nth-child(6n+5) { --r: -5deg; }
-.pills li:nth-child(6n+6) { --r: 2deg; }
-
-/* Reveal the pills individually */
-.js .pills li.reveal { transform: translateY(18px) rotate(var(--r, 0deg)); }
-.pills li.reveal.in { transform: rotate(var(--r, 0deg)); }
-.pills li.reveal.in:hover { transform: rotate(0deg) scale(1.04); }
-
 /* Focus areas ------------------------------------------------------------ */
 
 .focus {
@@ -952,8 +870,7 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .name span, :is(.hero, .page-title) .reveal { opacity: 1; transform: none; filter: none; transition: none; }
-  .pills li, .pills li.reveal { transform: none; }
-  .services::before, .status .pulse { animation: none; }
+  .status .pulse { animation: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
@@ -1169,7 +1086,7 @@ a { color: inherit; }
 .arm {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 42%;
   width: var(--l);
   height: 0;
   transform-origin: 0 50%;
@@ -1212,6 +1129,7 @@ a { color: inherit; }
    --lh: fixed box height, so the vertical centre is known without JS. */
 .orb-node .level { --s: calc(-1 * var(--a));               --dc: 11px;  --lh: 44px; }
 .leaf .level      { --s: calc(-1 * (var(--a) + var(--la))); --dc: 9.5px; --lh: 32px; }
+.twig .level      { --s: calc(-1 * (var(--a) + var(--la) + var(--ta))); --dc: 9.5px; --lh: 32px; }
 
 .level {
   position: absolute;
@@ -1230,7 +1148,8 @@ a { color: inherit; }
   animation-delay: 0s, var(--d, 0s);
 }
 [data-side="left"] > .level,
-[data-side="left"] .leaf-end > .level {
+[data-side="left"] > .orb-node > .level,
+[data-side="left"] > .leaf-end > .level {
   left: auto;
   right: calc(-1 * var(--dc));
   flex-direction: row-reverse;
@@ -1284,19 +1203,53 @@ a { color: inherit; }
   height: 1px;
   background: var(--orb-line);
 }
-.leaf .level {
+.leaf > .leaf-end > .level,
+.leaf > .orb-node > .level,
+.twig > .leaf-end > .level {
   opacity: 0;
-  visibility: hidden;          /* removes closed leaves from hit-testing */
+  visibility: hidden;          /* removes closed branches from hit-testing */
   pointer-events: none;
   transition: opacity 320ms var(--ease-out), visibility 0s linear 320ms;
 }
 .leaf .dot { width: 7px; height: 7px; border-width: 1px; }
-.leaf .lbl { font-size: 0.625rem; letter-spacing: 0.05em; text-transform: none; }
+.leaf .lbl { font-size: 0.625rem; letter-spacing: 0.05em; text-transform: none; line-height: 1.25; }
+.leaf .lbl .sub { display: block; font-weight: 400; color: var(--ink-2); }
+/* category nodes: same size as leaves but clickable and a touch bolder */
+.leaf > .orb-node .lbl { font-weight: 600; }
+.leaf > .orb-node .level { padding: 0 8px; }
+.leaf > .orb-node[aria-expanded="true"] .dot { background: var(--display); border-color: var(--display); }
 
-.arm.open .leaf { width: var(--ll); }
-.arm.open .leaf .level {
+.twigs {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.twig {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 50%;
+  transform: rotate(var(--ta));
+  transition: width 480ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+.twig > .line { position: absolute; left: 5px; right: 0; top: 0; height: 1px; background: var(--orb-line); }
+.twig .dot { width: 6px; height: 6px; border-width: 1px; }
+.twig .lbl { font-size: 0.625rem; letter-spacing: 0.04em; text-transform: none; color: var(--ink-2); }
+
+.arm.open > .leaves > .leaf { width: var(--ll); }
+.leaf.open > .twigs > .twig { width: var(--tl); }
+.arm.open > .leaves > .leaf > .leaf-end > .level,
+.arm.open > .leaves > .leaf > .orb-node > .level,
+.leaf.open > .twigs > .twig > .leaf-end > .level {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transition-delay: calc(var(--i, 0) * 70ms + 200ms), 0s;
 }
 .orbit[data-open] .arm:not(.open) { opacity: 0.35; }
@@ -1304,7 +1257,7 @@ a { color: inherit; }
 .orb-center {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 42%;
   z-index: 2;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -1312,7 +1265,7 @@ a { color: inherit; }
 .orb-idle {
   display: block;
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 1.5rem;
   line-height: 1;
   color: var(--display);
@@ -1337,10 +1290,37 @@ a { color: inherit; }
   50%      { transform: rotate(calc(var(--s) - 3deg)); }
 }
 
+/* Third level under the map on narrow screens */
+.orb-detail {
+  display: none;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  margin-top: var(--s-3);
+}
+.orb-detail .chips { margin: 0; }
+
 @media (max-width: 719px) {
+  .orb-detail:not([hidden]) { display: flex; }
+  /* small screens: arms and category nodes are drawn; skills are listed under the map */
+  .twigs, .leaf > .leaf-end { display: none; }
   .orbit { width: min(300px, 100%); }
   .arm { width: calc(var(--l) * 0.72); }
-  .arm.open .leaf { width: calc(var(--ll) * 0.6); }
+  .arm.open > .leaves > .leaf { width: calc(var(--ll) * 0.6); }
+  /* the services categories need their reach so their labels don't meet */
+  .arm.open > #leaves-services > .leaf { width: calc(var(--ll) * 0.7); }
+  /* the two long outer branches stay clear of the sheet edge at the
+     extremes of the drift cycle */
+  .arm.open > #leaves-services > .leaf:nth-child(1),
+  .arm.open > #leaves-services > .leaf:nth-child(4) { width: calc(var(--ll) * 0.56); }
+  /* Communications hangs its label to the left here so it clears Process */
+  #leaves-services > .leaf:nth-child(3) > .orb-node > .level {
+    left: auto;
+    right: calc(-1 * var(--dc));
+    flex-direction: row-reverse;
+    transform-origin: calc(100% - var(--dc)) 50%;
+  }
+  .leaf.open > .twigs > .twig { width: calc(var(--tl) * 0.7); }
   .level .lbl { font-size: 0.625rem; }
   /* long skill names wrap; the box height stays fixed so the pivot holds */
   .leaf .lbl { white-space: normal; max-width: 7rem; line-height: 1.2; }
@@ -1348,6 +1328,9 @@ a { color: inherit; }
 
 @media (min-width: 900px) {
   .background { grid-template-columns: 1fr 1.25fr; gap: var(--s-7); }
+  /* park the map at the left of its column: the slack goes to the right,
+     where the longest labels (Education) reach */
+  .background .orbit { margin-left: 0; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1386,5 +1369,5 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .orb-field, .arm, .level { animation: none; }
-  .orb-node, .arm, .leaf, .leaf .level, .ai-note .plus { transition: none; }
+  .orb-node, .arm, .leaf, .twig, .level, .ai-note .plus { transition: none; }
 }

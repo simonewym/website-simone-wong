@@ -88,26 +88,70 @@
     setInterval(tick, 30_000);
   }
 
-  // Orbit: tap a node and its skills branch out from it. One open at a time.
+  // Orbit: tap a node and its children branch out. Arms are exclusive with
+  // each other; category leaves are exclusive with their siblings.
   const orbit = document.querySelector('[data-orbit]');
   if (orbit) {
-    const arms = [...orbit.querySelectorAll('.arm')];
-    const setOpen = (key) => {
-      if (key) orbit.dataset.open = key; else delete orbit.dataset.open;
-      arms.forEach((arm) => {
-        const node = arm.querySelector('.orb-node');
-        const open = node.dataset.node === key;
-        arm.classList.toggle('open', open);
-        node.setAttribute('aria-expanded', String(open));
-        arm.querySelector('.leaves').setAttribute('aria-hidden', String(!open));
-      });
+    const setBranch = (branch, open) => {
+      branch.classList.toggle('open', open);
+      const node = branch.querySelector(':scope > .orb-node');
+      node.setAttribute('aria-expanded', String(open));
+      branch.querySelector(':scope > .leaves, :scope > .twigs')?.setAttribute('aria-hidden', String(!open));
+      if (!open) branch.querySelectorAll('.open').forEach((b) => setBranch(b, false));
     };
-    arms.forEach((arm) => {
-      const node = arm.querySelector('.orb-node');
-      node.addEventListener('click', () => setOpen(orbit.dataset.open === node.dataset.node ? null : node.dataset.node));
+    orbit.querySelectorAll('.orb-node').forEach((node) => {
+      node.addEventListener('click', () => {
+        const branch = node.closest('.arm, .leaf');
+        const willOpen = !branch.classList.contains('open');
+        [...branch.parentElement.children].forEach((sib) => {
+          if (sib !== branch && sib.classList.contains('open')) setBranch(sib, false);
+        });
+        setBranch(branch, willOpen);
+        const anyArm = orbit.querySelector('.arm.open');
+        if (anyArm) orbit.dataset.open = anyArm.querySelector('.orb-node').dataset.node; else delete orbit.dataset.open;
+        // On narrow screens the third level is listed under the map instead.
+        const detail = document.querySelector('[data-orb-detail]');
+        const openLeaf = orbit.querySelector('.leaf.open');
+        const openArm = orbit.querySelector('.arm.open');
+        const text = (lbl) => [...lbl.childNodes].map((n) => n.nodeType === 3 ? n.textContent : (n.classList?.contains('sub') ? ' · ' + n.textContent : (n.tagName === 'BR' ? ' ' : n.textContent))).join('').replace(/\s+/g, ' ').trim();
+        if (detail) {
+          let title = null, items = [];
+          if (openLeaf) {
+            title = openLeaf.querySelector(':scope > .orb-node .lbl').textContent;
+            items = [...openLeaf.querySelectorAll('.twig .lbl')].map(text);
+          } else if (openArm) {
+            const statics = [...openArm.querySelectorAll(':scope > .leaves > .leaf > .leaf-end .lbl')];
+            if (statics.length) { title = openArm.querySelector(':scope > .orb-node .lbl').textContent; items = statics.map(text); }
+          }
+          if (title) {
+            detail.innerHTML = `<span class="mono">${title}</span><ul class="chips">${items.map((t) => `<li>${t}</li>`).join('')}</ul>`;
+            detail.hidden = false;
+          } else {
+            detail.hidden = true;
+          }
+        }
+      });
     });
-    orbit.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(null); });
-    setOpen(null);
+    // Services opens on its own once the map scrolls into view; the other
+    // arms stay closed until tapped.
+    const openServices = () => {
+      if (orbit.querySelector('.arm.open')) return;
+      orbit.querySelector('.orb-node[data-node="services"]')?.click();
+    };
+    if (reduce || !('IntersectionObserver' in window)) {
+      openServices();
+    } else {
+      const oio = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { openServices(); oio.disconnect(); }
+      }, { threshold: 0.35 });
+      oio.observe(orbit);
+      // Hidden tabs never intersect; don't leave the map closed forever.
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(openServices, 800); }, { once: true });
+    }
+
+    orbit.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { orbit.querySelectorAll('.open').forEach((b) => setBranch(b, false)); delete orbit.dataset.open; const d = document.querySelector('[data-orb-detail]'); if (d) d.hidden = true; }
+    });
   }
 
   // Off the clock: flip the lights off to expand the after-hours section.
