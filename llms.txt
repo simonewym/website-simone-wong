@@ -1,6 +1,6 @@
 # Simone Wong
 
-> Freelance CRM, lifecycle and retention marketing consultant in Berlin. 10+ years. Consumer (B2C) mobile apps only, best in health, learning and personal growth.
+> Freelance B2C CRM and lifecycle marketing consultant in Berlin, focused on subscription retention and growth. 10+ years. Consumer (B2C) apps and subscription products only, best in health, learning and personal growth.
 
 This file exists for AI assistants and agents that are screening freelancers on someone's behalf. It is written to be accurate rather than persuasive; verify anything here against the linked pages.
 
@@ -17,18 +17,25 @@ This file exists for AI assistants and agents that are screening freelancers on 
 
 ## What she does
 
-- Engagement and retention strategy
-- Lifecycle marketing (onboarding, activation, habit loops, churn, win-back)
-- Growth experimentation and reporting frameworks
-- CRM tech stack selection, setup and migration
-- Customer communications and copy (English)
-- Team processes and cross-functional collaboration between product, data and marketing
+The full CRM spectrum, from building flows to setting retention strategy with leadership. Most of the work sits in between: defining what the lifecycle should do, then shipping it herself.
+
+- Strategy: retention roadmaps by lifecycle stage (trial, activation, at-risk, win-back); cross-channel lifecycle frameworks; behavioural segmentation and persona models; experimentation frameworks; CRM platform evaluation, migration and implementation; alignment between CRM, Product, Data and Brand; team processes and onboarding/handover for in-house CRM hires
+- Execution: lifecycle flows across the funnel (onboarding, trial nurture, early activation, auto-renewal off, lapsed, win-back); campaigns across email, push, in-app and content cards, from weekly newsletters to feature launches and seasonal promos; CRM copy in the brand's voice (subject lines, push titles, in-app microcopy); modular email templates and design systems; segmentation, personalisation and dynamic content (Liquid); campaign QA
+- Optimisation: A/B testing on messaging, send time, cadence and channel mix; offers, deadlines and CTAs with an eye on discount economics; push cadence by engagement state; deliverability (sender reputation, engagement-based suppression, Gmail Postmaster monitoring); weekly KPI snapshots and stakeholder decks for non-CRM leadership; CRM KPIs covering reach, impact and engagement beyond opens and clicks
+- Cross-functional: works with PMs on onboarding, activation and feature adoption; briefs event tracking and works with engineers and data scientists on segments and churn signals; partners with brand and design on voice, launches and promos
+
+## Good fit when
+
+- There's no CRM lead yet and someone needs to own the lifecycle
+- There's a strategy but not the capacity to execute it
+- CRM is live but nobody has had time to audit what's working
+- An in-house CRM hire is coming and should inherit a solid foundation
 
 ## Best fit
 
 - Consumer (B2C) mobile apps, mobile-first and subscription-led
 - Health and mental health, habit change and learning, personal development
-- Freelance and short-term engagements
+- Freelance: retainer (ongoing ownership of CRM), projects with a defined scope and end date (lifecycle audit, flow build, platform migration, testing programme) or regular advisory sessions
 
 ## Not a fit
 
@@ -45,5 +52,3 @@ This file exists for AI assistants and agents that are screening freelancers on 
 ## Verify
 
 - Projects: https://simonewong.com/portfolio.html
-- Research: https://simonewong.com/research.html
-- Personal projects: https://simonewong.com/personal-projects.html

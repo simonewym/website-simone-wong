@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#0b2a20">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add("js")</script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -22,17 +22,14 @@
 
   <header class="top">
     <div class="container">
-      <a class="wordmark" href="index.html"><span class="dot" aria-hidden="true"></span>Simone Wong</a>
-      <nav class="nav" aria-label="Main">
-        <a href="index.html">About me</a>
+      <a class="wordmark" href="index.html">Simone Wong</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="nav" id="site-nav" aria-label="Main">
+        <a href="index.html">About</a>
         <a href="portfolio.html">Projects</a>
-        <a href="research.html">Research</a>
-        <a href="personal-projects.html" aria-current="page">Personal</a>
+        <a href="mailto:work@simonewong.com">Contact</a>
+        <!-- Hidden for now: <a href="research.html">Research</a> <a href="personal-projects.html">Personal</a> -->
       </nav>
-      <div class="top-right">
-        <span class="clock">Berlin <span data-clock>--:--</span></span>
-        <a class="btn btn-primary" href="https://cal.com/simone-wong/15min" target="_blank" rel="noopener">Book a call <span class="arrow" aria-hidden="true">→</span></a>
-      </div>
     </div>
   </header>
 
@@ -101,7 +98,8 @@
   </main>
 
   <footer class="foot container">
-    <p class="big reveal">Let's build <em>something that sticks.</em></p>
+    <p class="big reveal">Looking for something long-term? So are your users.</p>
+    <p class="foot-lede reveal">Retention is just a relationship that keeps showing up. I build that for your users, and I bring it to working with you: honest, invested, and still here after the launch.</p>
     <div class="foot-grid reveal" style="--i:1">
       <div class="links">
         <a class="link" href="mailto:work@simonewong.com">work@simonewong.com</a>

@@ -7,16 +7,35 @@
   // Split display text into per-letter spans so the name can stagger in.
   // The original text stays available to assistive tech via aria-label.
   document.querySelectorAll('[data-split]').forEach((el) => {
-    const text = el.textContent;
-    el.setAttribute('aria-label', text);
-    el.textContent = '';
-    [...text].forEach((ch, i) => {
-      const s = document.createElement('span');
-      s.textContent = ch === ' ' ? ' ' : ch;
-      s.style.setProperty('--i', i);
-      s.setAttribute('aria-hidden', 'true');
-      el.appendChild(s);
-    });
+    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+    let i = 0;
+    const splitInto = (node) => {
+      [...node.childNodes].forEach((child) => {
+        if (child.nodeType === Node.TEXT_NODE) {
+          // letters are grouped into whole-word boxes so a line can only
+          // break between words, never inside one
+          const frag = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+            const word = document.createElement('span');
+            word.className = 'word';
+            word.setAttribute('aria-hidden', 'true');
+            [...part].forEach((ch) => {
+              const s = document.createElement('span');
+              s.textContent = ch;
+              s.style.setProperty('--i', i++);
+              word.appendChild(s);
+            });
+            frag.appendChild(word);
+          });
+          child.replaceWith(frag);
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+          splitInto(child);   // keep <em> etc., split what's inside
+        }
+      });
+    };
+    splitInto(el);
   });
 
   // Give each child of a stagger group an index for its transition delay.
@@ -77,6 +96,23 @@
     update();
   }
 
+  // Phone menu: the nav folds into a dropdown under the Menu button.
+  const toggle = document.querySelector('.menu-toggle');
+  if (toggle) {
+    const top = toggle.closest('.top');
+    const set = (open) => {
+      top.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open ? 'Close' : 'Menu';
+    };
+    toggle.addEventListener('click', () => set(!top.classList.contains('is-open')));
+    top.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => set(false)));
+    document.addEventListener('click', (e) => { if (!top.contains(e.target)) set(false); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && top.classList.contains('is-open')) { set(false); toggle.focus(); }
+    });
+  }
+
   // Live local time, the way a studio site would show it.
   const clocks = document.querySelectorAll('[data-clock]');
   if (clocks.length) {
@@ -97,12 +133,17 @@
       const node = branch.querySelector(':scope > .orb-node');
       node.setAttribute('aria-expanded', String(open));
       branch.querySelector(':scope > .leaves, :scope > .twigs')?.setAttribute('aria-hidden', String(!open));
+      if (!open) branch.classList.remove('open');
       if (!open) branch.querySelectorAll('.open').forEach((b) => setBranch(b, false));
     };
     orbit.querySelectorAll('.orb-node').forEach((node) => {
       node.addEventListener('click', () => {
         const branch = node.closest('.arm, .leaf');
         const willOpen = !branch.classList.contains('open');
+        // A category only makes sense with its arm extended, so make sure
+        // the parent is open before opening a child.
+        const parentArm = branch.classList.contains('leaf') ? branch.closest('.arm') : null;
+        if (willOpen && parentArm && !parentArm.classList.contains('open')) setBranch(parentArm, true);
         [...branch.parentElement.children].forEach((sib) => {
           if (sib !== branch && sib.classList.contains('open')) setBranch(sib, false);
         });
@@ -114,11 +155,26 @@
         const openLeaf = orbit.querySelector('.leaf.open');
         const openArm = orbit.querySelector('.arm.open');
         const text = (lbl) => [...lbl.childNodes].map((n) => n.nodeType === 3 ? n.textContent : (n.classList?.contains('sub') ? ' · ' + n.textContent : (n.tagName === 'BR' ? ' ' : n.textContent))).join('').replace(/\s+/g, ' ').trim();
+        // Holding the map still makes an open list readable.
+        orbit.classList.toggle('is-still', !!openLeaf);
         if (detail) {
           let title = null, items = [];
+          // Narrow screens don't draw the category fan, so when Services is
+          // open the whole breakdown is listed here in one go.
+          const listAll = window.matchMedia('(max-width: 719px)').matches
+            && openArm?.querySelector(':scope > .orb-node')?.dataset.node === 'services';
+          if (listAll) {
+            detail.innerHTML = [...openArm.querySelectorAll(':scope > .leaves > .leaf')].map((leaf) => {
+              const t = leaf.querySelector(':scope > .orb-node .lbl').textContent;
+              const li = [...leaf.querySelectorAll('.twigs li')].map((x) => `<li>${x.innerHTML.replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '').trim()}</li>`).join('');
+              return `<div class="orb-group"><span class="mono">${t}</span><ul class="chips">${li}</ul></div>`;
+            }).join('');
+            detail.hidden = false;
+            return;
+          }
           if (openLeaf) {
             title = openLeaf.querySelector(':scope > .orb-node .lbl').textContent;
-            items = [...openLeaf.querySelectorAll('.twig .lbl')].map(text);
+            items = [...openLeaf.querySelectorAll('.twigs li')].map((li) => li.innerHTML.replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '').trim());
           } else if (openArm) {
             const statics = [...openArm.querySelectorAll(':scope > .leaves > .leaf > .leaf-end .lbl')];
             if (statics.length) { title = openArm.querySelector(':scope > .orb-node .lbl').textContent; items = statics.map(text); }
@@ -132,26 +188,32 @@
         }
       });
     });
-    // Services opens on its own once the map scrolls into view; the other
-    // arms stay closed until tapped.
-    const openServices = () => {
-      if (orbit.querySelector('.arm.open')) return;
-      orbit.querySelector('.orb-node[data-node="services"]')?.click();
-    };
-    if (reduce || !('IntersectionObserver' in window)) {
-      openServices();
-    } else {
-      const oio = new IntersectionObserver((entries) => {
-        if (entries.some((e) => e.isIntersecting)) { openServices(); oio.disconnect(); }
-      }, { threshold: 0.35 });
-      oio.observe(orbit);
-      // Hidden tabs never intersect; don't leave the map closed forever.
-      document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(openServices, 800); }, { once: true });
-    }
+    // Services is expanded by default; the other arms start closed.
+    const svc = orbit.querySelector('.orb-node[data-node="services"]');
+    if (svc && !orbit.querySelector('.arm.open')) svc.click();
 
     orbit.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { orbit.querySelectorAll('.open').forEach((b) => setBranch(b, false)); delete orbit.dataset.open; const d = document.querySelector('[data-orb-detail]'); if (d) d.hidden = true; }
+      if (e.key === 'Escape') { orbit.querySelectorAll('.open').forEach((b) => setBranch(b, false)); delete orbit.dataset.open; orbit.classList.remove('is-still'); const d = document.querySelector('[data-orb-detail]'); if (d) d.hidden = true; }
     });
+  }
+
+  // Keep the map beside the text: scale it to its column when the column is
+  // narrower than the map's natural footprint. Phones use the stacked layout.
+  const orbitEl = document.querySelector('[data-orbit]');
+  if (orbitEl && 'ResizeObserver' in window) {
+    const NATURAL = 580;   // orbit (460) + room for the lists that hang off it
+    const wide = window.matchMedia('(min-width: 720px)');
+    const fit = () => {
+      if (!wide.matches) { orbitEl.style.zoom = ''; return; }
+      // the orbit is a grid item: read its track, not the whole grid
+      const tracks = getComputedStyle(orbitEl.parentElement).gridTemplateColumns.split(' ').map(parseFloat);
+      const col = tracks.length > 1 ? tracks[tracks.length - 1] : orbitEl.parentElement.getBoundingClientRect().width;
+      const z = Math.max(0.72, Math.min(1, col / NATURAL));
+      orbitEl.style.zoom = z === 1 ? '' : String(z);
+    };
+    new ResizeObserver(fit).observe(orbitEl.parentElement);
+    wide.addEventListener('change', fit);
+    fit();
   }
 
   // Off the clock: flip the lights off to expand the after-hours section.

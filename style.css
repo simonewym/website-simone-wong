@@ -17,9 +17,10 @@
 
   --paper:   #f4f3ee;
   --paper-2: #ebeae3;
-  --ink:     #14201a;
-  --ink-2:   #5b665f;
-  --line:    rgba(20, 32, 26, 0.12);
+  --ink:     #0f3d2e;   /* deep green is the primary colour, used for text */
+  --ink-2:   #56695f;   /* muted green-grey, 5.3:1 on paper */
+  --line:    rgba(15, 61, 46, 0.14);
+  --note:    #5c6b2e;   /* olive, for the AI note: 5.3:1 on paper */
 
   --on-green: #f4f3ee;
   --on-green-2: rgba(244, 243, 238, 0.68);
@@ -38,13 +39,17 @@
   --on-accent:    var(--green-900);
 
   /* Orange/red is reserved for the availability line and nothing else. */
-  --signal-text:  #bf4410;
-  --signal-dot:   #e5322d;
+  --signal-text:  #c8000a;
+  --signal-dot:   #e8000b;
 
   /* ---- Type --------------------------------------------------------- */
-  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --sans:  "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono:  "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* One family for everything: titles are Helvetica too, just larger. */
+  --title: var(--sans);
+  --heading: var(--sans);
+  /* Helvetica is a system font on Apple devices; Windows and Android get
+     Arial, its closest built-in match. */
+  --sans:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:  "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   --fs-xs:   0.6875rem;
   --fs-sm:   0.8125rem;
@@ -52,7 +57,7 @@
   --fs-lead: clamp(1rem, 0.95rem + 0.4vw, 1.1875rem);
   --fs-stmt: clamp(1.5rem, 1rem + 2vw, 2.75rem);
   --fs-h2:   clamp(1.875rem, 1.3rem + 2.4vw, 3.5rem);
-  --fs-name: clamp(3.5rem, 16vw, 17rem);
+  --fs-name: clamp(4rem, 11.5vw, 10.5rem);
 
   /* ---- Space -------------------------------------------------------- */
   --s-1: 0.5rem;  --s-2: 0.75rem; --s-3: 1rem;  --s-4: 1.5rem;
@@ -83,8 +88,8 @@
     --em:      #9fd4b8;
     --btn-bg:  #21775a;
     --btn-bg-hover: #288a68;
-    --signal-text: #ff8a4c;
-    --signal-dot:  #ff5a4f;
+    --signal-text: #ff5c5c;
+    --signal-dot:  #ff3b3b;
   }
 }
 
@@ -116,7 +121,7 @@ img { max-width: 100%; display: block; }
 
 a { color: inherit; }
 
-::selection { background: var(--sprout); color: var(--green-900); }
+::selection { background: color-mix(in srgb, var(--ink) 16%, var(--paper)); color: var(--ink); }
 
 /* Cross-page transitions: a one-line MPA upgrade in supporting browsers. */
 @view-transition { navigation: auto; }
@@ -176,7 +181,8 @@ a { color: inherit; }
   color: var(--ink-2);
 }
 
-.serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; }
+.serif { font-family: var(--heading); font-weight: 400; letter-spacing: -0.01em; }
+
 .serif em { font-style: italic; }
 
 .muted { color: var(--ink-2); }
@@ -301,8 +307,19 @@ a { color: inherit; }
 }
 .btn:active { transform: scale(0.98); }
 
-.btn-primary { background: var(--accent); color: var(--on-accent); }
-.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary {
+  min-height: var(--tap);
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.btn-primary:hover { text-decoration-thickness: 2px; }
+.btn-primary:active { transform: none; }
 
 .btn-ghost {
   border: 1px solid var(--line);
@@ -318,11 +335,8 @@ a { color: inherit; }
    -------------------------------------------------------------------------- */
 
 .hero {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: calc(100svh - 2 * var(--frame) - 72px);
-  padding-top: var(--s-5);
-  padding-bottom: var(--s-6);
+  padding-top: var(--s-6);
+  padding-bottom: var(--s-7);
 }
 
 .hero-grid {
@@ -332,7 +346,7 @@ a { color: inherit; }
 }
 
 .hero .statement {
-  font-family: var(--serif);
+  font-family: var(--heading);
   font-size: var(--fs-stmt);
   line-height: 1.08;
   letter-spacing: -0.015em;
@@ -388,18 +402,14 @@ a { color: inherit; }
 }
 
 /* The name. Sits at the bottom of the first viewport; letters stagger in. */
-.name-block {
-  margin-top: var(--s-7);
-}
 
 .name {
-  margin: 0 0 0 -0.04em;
-  font-family: var(--serif);
+  margin: 0 0 0 -0.05em;
+  font-family: var(--heading);
   font-size: var(--fs-name);
   font-weight: 400;
-  line-height: 0.82;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
   color: var(--display);
 }
 
@@ -455,7 +465,7 @@ a { color: inherit; }
 
 .section-head h2 {
   margin: 0;
-  font-family: var(--serif);
+  font-family: var(--title);
   font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1;
@@ -492,7 +502,7 @@ a { color: inherit; }
 
 .focus-card h3 {
   margin: var(--s-4) 0 var(--s-1);
-  font-family: var(--serif);
+  font-family: var(--title);
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.05;
@@ -518,7 +528,7 @@ a { color: inherit; }
 .card .thumb {
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 0;
   background: var(--paper-2);
 }
 
@@ -591,14 +601,14 @@ a { color: inherit; }
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: 14px;
+  border-radius: 0;
 }
 
-.about .photos img:last-child { margin-top: var(--s-5); }
+
 
 .about h2 {
   margin: var(--s-2) 0 var(--s-3);
-  font-family: var(--serif);
+  font-family: var(--title);
   font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1;
@@ -607,6 +617,10 @@ a { color: inherit; }
 }
 
 .about p { color: var(--ink-2); max-width: 46ch; }
+
+@media (min-width: 720px) {
+  .about { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-6); align-items: center; }
+}
 
 /* --------------------------------------------------------------------------
    Inner pages
@@ -619,7 +633,7 @@ a { color: inherit; }
 
 .page-title h1 {
   margin: var(--s-2) 0 0 -0.03em;
-  font-family: var(--serif);
+  font-family: var(--title);
   font-size: clamp(2.75rem, 7vw, 6.5rem);
   font-weight: 400;
   line-height: 0.9;
@@ -662,7 +676,7 @@ a { color: inherit; }
   width: 96px;
   height: 96px;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 0;
   background: var(--paper-2);
 }
 
@@ -688,7 +702,7 @@ a { color: inherit; }
 
 .case h2 {
   margin: 0 0 var(--s-1);
-  font-family: var(--serif);
+  font-family: var(--title);
   font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
   font-weight: 400;
   line-height: 1.05;
@@ -789,14 +803,16 @@ a { color: inherit; }
 
 .foot .big {
   margin: 0 0 var(--s-5) -0.03em;
-  font-family: var(--serif);
+  font-family: var(--title);
   font-size: clamp(2.25rem, 6vw, 5.5rem);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: -0.03em;
 }
 
-.foot .big em { font-style: italic; color: var(--em); }
+
+
+.foot-grid > .btn { justify-self: start; }
 
 .foot-grid {
   display: grid;
@@ -844,7 +860,6 @@ a { color: inherit; }
 }
 
 @media (min-width: 720px) {
-  .hero-grid { grid-template-columns: 1.2fr 1fr; gap: var(--s-6); align-items: start; }
   .hero .bio-col { padding-top: 0.4rem; }
   .cards { grid-template-columns: repeat(3, 1fr); }
   .focus { grid-template-columns: repeat(3, 1fr); }
@@ -859,7 +874,7 @@ a { color: inherit; }
 }
 
 @media (min-width: 1024px) {
-  .about { grid-template-columns: 1fr 1.1fr; gap: var(--s-7); }
+  .about { gap: var(--s-7); }
   .foot-grid { grid-template-columns: 1fr auto; }
 }
 
@@ -1053,11 +1068,34 @@ a { color: inherit; }
   margin-top: var(--s-7);
 }
 
-.bg-blurb p:not(.mono) {
-  margin: var(--s-2) 0 0;
-  max-width: 36ch;
+.bg-services {
+  margin: var(--s-3) 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 40ch;
+}
+.bg-services li {
+  padding: var(--s-2) 0;
+  border-top: 1px solid var(--line);
   color: var(--ink-2);
 }
+.bg-services li:last-child { border-bottom: 1px solid var(--line); }
+.bg-services strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.bg-blurb p:not(.mono) {
+  margin: var(--s-2) 0 0;
+  max-width: 38ch;
+  color: var(--ink-2);
+}
+
 
 /* The orbit: "Simone" in the middle, four thin arms of different lengths at
    irregular angles, a small circle and a label at the end of each. Tap a node
@@ -1080,7 +1118,7 @@ a { color: inherit; }
 .orb-field {
   position: absolute;
   inset: 0;
-  animation: drift 36s ease-in-out infinite;
+  animation: float-field 22s ease-in-out infinite;
 }
 
 .arm {
@@ -1091,7 +1129,9 @@ a { color: inherit; }
   height: 0;
   transform-origin: 0 50%;
   transform: rotate(var(--a));
-  animation: sway 8s ease-in-out infinite;
+  /* each arm breathes in length on its own timing: movement without any
+     rotation, so labels never need a moving counter-rotation */
+  animation: breathe 9s ease-in-out infinite;
   animation-delay: var(--d, 0s);
   transition: opacity 300ms var(--ease-out);
 }
@@ -1129,7 +1169,6 @@ a { color: inherit; }
    --lh: fixed box height, so the vertical centre is known without JS. */
 .orb-node .level { --s: calc(-1 * var(--a));               --dc: 11px;  --lh: 44px; }
 .leaf .level      { --s: calc(-1 * (var(--a) + var(--la))); --dc: 9.5px; --lh: 32px; }
-.twig .level      { --s: calc(-1 * (var(--a) + var(--la) + var(--ta))); --dc: 9.5px; --lh: 32px; }
 
 .level {
   position: absolute;
@@ -1142,10 +1181,8 @@ a { color: inherit; }
   padding: 0 6px;
   white-space: nowrap;
   transform-origin: var(--dc) 50%;
+  /* static counter-rotation only: nothing in the tree rotates over time */
   transform: rotate(var(--s));
-  rotate: 0deg;
-  animation: drift-counter 36s ease-in-out infinite, sway-counter 8s ease-in-out infinite;
-  animation-delay: 0s, var(--d, 0s);
 }
 [data-side="left"] > .level,
 [data-side="left"] > .orb-node > .level,
@@ -1220,33 +1257,80 @@ a { color: inherit; }
 .leaf > .orb-node[aria-expanded="true"] .dot { background: var(--display); border-color: var(--display); }
 
 .twigs {
+  --sl: calc(-1 * (var(--a) + var(--la)));
+  --tw: translate(14px, 15px);
   position: absolute;
   left: 100%;
   top: 0;
+  width: max-content;
+  transform-origin: 0 0;
+  transform: rotate(var(--sl)) var(--tw);
+  opacity: 0;
+  /* visibility flips instantly in both directions: a delayed visibility
+     transition here raced the `animation: none` from .is-still and swallowed
+     the opacity transition's start, so the list arrived a click late. */
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 300ms var(--ease-out);
+}
+.leaf[data-side="left"] > .twigs { --tw: translate(calc(-100% - 14px), 15px); }
+
+.leaf.open > .twigs {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.twigs ul {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 14px;
   list-style: none;
+  border-left: 1px solid var(--orb-line);
 }
-.twig {
+.leaf[data-side="left"] > .twigs ul {
+  padding: 0 14px 0 0;
+  border-left: 0;
+  border-right: 1px solid var(--orb-line);
+  text-align: right;
+}
+
+.twigs li {
+  position: relative;
+  padding: 3px 0;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.twigs li::before {
+  content: "";
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 0;
-  height: 0;
-  transform-origin: 0 50%;
-  transform: rotate(var(--ta));
-  transition: width 480ms var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 60ms);
+  left: -14px;
+  top: 0.85em;
+  width: 8px;
+  height: 1px;
+  background: var(--orb-line);
 }
-.twig > .line { position: absolute; left: 5px; right: 0; top: 0; height: 1px; background: var(--orb-line); }
-.twig .dot { width: 6px; height: 6px; border-width: 1px; }
-.twig .lbl { font-size: 0.625rem; letter-spacing: 0.04em; text-transform: none; color: var(--ink-2); }
+.leaf[data-side="left"] > .twigs li::before { left: auto; right: -14px; }
+
+
+/* Reading a list beats watching it drift. While a category is open the map
+   eases back to its neutral orientation and holds there: every arm and
+   label then sits at its static angle, so the branch is exactly level
+   rather than frozen at some arbitrary point in the drift cycle. */
+.orbit.is-still .orb-field {
+  animation: none;
+  transform: translate(0, 0);
+  transition: transform 460ms var(--ease-out);
+}
+.orbit.is-still .arm { animation: none; }
 
 .arm.open > .leaves > .leaf { width: var(--ll); }
-.leaf.open > .twigs > .twig { width: var(--tl); }
 .arm.open > .leaves > .leaf > .leaf-end > .level,
 .arm.open > .leaves > .leaf > .orb-node > .level,
-.leaf.open > .twigs > .twig > .leaf-end > .level {
+.x-unused-twig-level {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -1264,7 +1348,7 @@ a { color: inherit; }
 }
 .orb-idle {
   display: block;
-  font-family: var(--serif);
+  font-family: var(--heading);
   font-style: normal;
   font-size: 1.5rem;
   line-height: 1;
@@ -1273,24 +1357,29 @@ a { color: inherit; }
   padding: 4px 8px;
 }
 
-@keyframes drift {
-  0%, 100% { transform: rotate(-7deg); }
-  50%      { transform: rotate(7deg); }
+@keyframes float-field {
+  0%, 100% { transform: translate(0, 0); }
+  30%      { transform: translate(7px, -5px); }
+  65%      { transform: translate(-6px, 6px); }
 }
-@keyframes drift-counter {
-  0%, 100% { rotate: 7deg; }
-  50%      { rotate: -7deg; }
-}
-@keyframes sway {
-  0%, 100% { transform: rotate(calc(var(--a) - 3deg)); }
-  50%      { transform: rotate(calc(var(--a) + 3deg)); }
-}
-@keyframes sway-counter {
-  0%, 100% { transform: rotate(calc(var(--s) + 3deg)); }
-  50%      { transform: rotate(calc(var(--s) - 3deg)); }
+@keyframes breathe {
+  0%, 100% { width: var(--l); }
+  50%      { width: calc(var(--l) * 1.07); }
 }
 
-/* Third level under the map on narrow screens */
+/* the expanded node's dot pulses to say "this is interactive" */
+.orb-node[aria-expanded="true"] .dot {
+  border-radius: 50%;
+  animation: node-pulse 1.8s ease-out infinite;
+}
+.leaf > .orb-node[aria-expanded="true"] .dot { transform: none; }
+@keyframes node-pulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--display) 55%, transparent); }
+  70%  { box-shadow: 0 0 0 9px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* Skill lists under the map: narrow screens only */
 .orb-detail {
   display: none;
   align-items: center;
@@ -1299,6 +1388,9 @@ a { color: inherit; }
   margin-top: var(--s-3);
 }
 .orb-detail .chips { margin: 0; }
+.orb-detail .orb-group { flex: 1 1 100%; }
+.orb-detail .orb-group .mono { display: block; margin-bottom: var(--s-1); }
+.orb-detail .orb-group + .orb-group { margin-top: var(--s-3); }
 
 @media (max-width: 719px) {
   .orb-detail:not([hidden]) { display: flex; }
@@ -1307,30 +1399,233 @@ a { color: inherit; }
   .orbit { width: min(300px, 100%); }
   .arm { width: calc(var(--l) * 0.72); }
   .arm.open > .leaves > .leaf { width: calc(var(--ll) * 0.6); }
-  /* the services categories need their reach so their labels don't meet */
-  .arm.open > #leaves-services > .leaf { width: calc(var(--ll) * 0.7); }
-  /* the two long outer branches stay clear of the sheet edge at the
-     extremes of the drift cycle */
-  .arm.open > #leaves-services > .leaf:nth-child(1),
-  .arm.open > #leaves-services > .leaf:nth-child(4) { width: calc(var(--ll) * 0.56); }
-  /* Communications hangs its label to the left here so it clears Process */
-  #leaves-services > .leaf:nth-child(3) > .orb-node > .level {
-    left: auto;
-    right: calc(-1 * var(--dc));
-    flex-direction: row-reverse;
-    transform-origin: calc(100% - var(--dc)) 50%;
-  }
-  .leaf.open > .twigs > .twig { width: calc(var(--tl) * 0.7); }
+  /* At this width a four-way fan of category nodes cannot be laid out
+     without labels colliding, so the map keeps only its five arms and the
+     whole Services breakdown is listed under it instead. */
+  #leaves-services > .leaf { display: none; }
+
   .level .lbl { font-size: 0.625rem; }
   /* long skill names wrap; the box height stays fixed so the pivot holds */
   .leaf .lbl { white-space: normal; max-width: 7rem; line-height: 1.2; }
 }
 
+/* --------------------------------------------------------------------------
+   Hero — four elements: name, intro, portrait, call to action.
+   Left: the name at the top, intro and CTA at the bottom. Right: the photo.
+   -------------------------------------------------------------------------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: "name" "photo" "blurb";
+  gap: var(--s-5);
+  padding-top: var(--s-4);
+  padding-bottom: var(--s-7);
+}
+.hero .name  { grid-area: name; }
+.hero-photo  { grid-area: photo; }
+.hero-blurb  { grid-area: blurb; }
+
+.hero-photo { margin: 0; background: var(--paper-2); }
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.hero-blurb .bio {
+  max-width: 31ch;
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--ink);
+}
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+  margin-top: var(--s-4);
+}
+.hero-cta .status { margin: 0; }
+
 @media (min-width: 900px) {
-  .background { grid-template-columns: 1fr 1.25fr; gap: var(--s-7); }
-  /* park the map at the left of its column: the slack goes to the right,
-     where the longest labels (Education) reach */
-  .background .orbit { margin-left: 0; }
+  /* The photo is half the content width at every screen size (phones too),
+     pinned to the top-right corner, so it scales smoothly instead of jumping
+     at this breakpoint. The name sits on one line in the left half. */
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 50%;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "name  photo"
+      "blurb photo";
+    column-gap: var(--s-6);
+    row-gap: var(--s-7);
+    min-height: min(calc(100svh - 2 * var(--frame) - 64px), 880px);
+    padding-bottom: var(--s-5);
+  }
+  .hero .name { align-self: start; font-size: clamp(2.5rem, 6vw, 5rem); }
+  .hero-blurb { align-self: end; margin-bottom: var(--s-8); }
+  /* 4:5, never taller than the screen (crops in from the sides if needed) */
+  .hero-photo { align-self: start; justify-self: end; width: 100%; }
+  .hero-photo img {
+    height: auto;
+    aspect-ratio: 4 / 5;
+    max-height: calc(100svh - 2 * var(--frame) - 64px - var(--s-4) - var(--s-5));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   What I do
+   -------------------------------------------------------------------------- */
+
+.whatido {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  margin-top: var(--s-8);
+}
+.whatido-intro h2 {
+  margin: var(--s-2) 0 var(--s-3);
+  font-family: var(--title);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.whatido-intro p:not(.mono) { margin: 0 0 var(--s-3); max-width: 58ch; color: var(--ink-2); }
+.whatido-intro .whatido-focus { color: var(--ink); font-size: var(--fs-lead); line-height: 1.45; max-width: 46ch; }
+
+/* Three columns: Execution, Optimisation, Strategy */
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pillar .num {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+.pillar h3 {
+  margin: var(--s-2) 0 var(--s-2);
+  font-family: var(--title);
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.pillar-lede { margin: 0 0 var(--s-3); max-width: 34ch; color: var(--ink); }
+
+/* Plain lists with a short dash, used across this section */
+.pillar ul,
+.dash-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.pillar ul li,
+.dash-list li {
+  position: relative;
+  padding-left: 1.1em;
+  margin-bottom: var(--s-2);
+}
+.pillar ul li::before,
+.dash-list li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--ink-2);
+}
+.dash-list strong { color: var(--ink); font-weight: 700; }
+
+/* Where I do my best work / How I fit in */
+.howiwork {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-6);
+  margin-top: var(--s-7);
+}
+.howiwork h3 {
+  margin: var(--s-2) 0 var(--s-3);
+  font-family: var(--title);
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: pretty;
+}
+.howiwork p:not(.mono) { margin: 0 0 var(--s-3); max-width: 52ch; color: var(--ink-2); }
+.howiwork .dash-list { margin-bottom: var(--s-3); max-width: 52ch; font-size: inherit; }
+
+/* Ways to work together: three short columns */
+.ways { margin-top: var(--s-7); }
+.ways-list {
+  display: grid;
+  gap: var(--s-3);
+  margin: var(--s-3) 0 var(--s-3);
+  padding: 0;
+  list-style: none;
+}
+.ways-list h4 {
+  margin: 0 0 2px;
+  font-family: var(--title);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.ways-list p { margin: 0; max-width: 36ch; color: var(--ink-2); }
+
+@media (min-width: 720px) {
+  .ways-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
+}
+@media (min-width: 1024px) {
+  .pillars { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
+  .howiwork { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-7); }
+}
+
+.whatido-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.whatido-list li {
+  padding: var(--s-4) 0;
+  border-bottom: 1px solid var(--line);
+}
+.whatido-list .num {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+.whatido-list h3 {
+  margin: var(--s-1) 0 var(--s-1);
+  font-family: var(--title);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+.whatido-list p { margin: 0; color: var(--ink-2); }
+
+@media (min-width: 720px) {
+  .whatido-list { grid-template-columns: 1fr 1fr; column-gap: var(--s-5); }
 }
 
 /* --------------------------------------------------------------------------
@@ -1340,16 +1635,15 @@ a { color: inherit; }
 #for-ai { margin-top: calc(-1 * var(--s-6)); }
 
 .ai-note {
-  border: 1px dashed color-mix(in srgb, var(--ink) 30%, transparent);
-  border-radius: 14px;
-  background: var(--paper-2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .ai-note summary {
   display: flex;
   align-items: center;
   gap: var(--s-3);
-  padding: var(--s-3) var(--s-4);
+  padding: var(--s-3) 0;
   cursor: pointer;
   list-style: none;
 }
@@ -1358,16 +1652,535 @@ a { color: inherit; }
 .ai-note .plus { font-family: var(--mono); transition: transform 300ms var(--ease-out); }
 .ai-note[open] .plus { transform: rotate(45deg); }
 
-.ai-body { padding: 0 var(--s-4) var(--s-4); max-width: 72ch; font-size: var(--fs-sm); }
+.ai-body { padding: 0 0 var(--s-4); max-width: 72ch; font-size: var(--fs-sm); }
 .ai-body p { margin: 0 0 var(--s-3); color: var(--ink-2); }
 .ai-body ul { margin: 0 0 var(--s-3); padding-left: 1.1em; }
 .ai-body li { margin-bottom: var(--s-1); }
-.ai-body strong { color: var(--ink); font-weight: 600; }
+.ai-body strong { color: var(--ink); font-weight: 700; }
 
 /* Footer CTA row */
 .foot .legal { margin-top: var(--s-5); }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb-field, .arm, .level { animation: none; }
-  .orb-node, .arm, .leaf, .twig, .level, .ai-note .plus { transition: none; }
+  .orb-field, .arm, .orb-node .dot { animation: none; }
+  .orb-node, .arm, .leaf, .twigs, .level, .ai-note .plus { transition: none; }
+}
+
+
+/* --------------------------------------------------------------------------
+   Nav — plain links on the page, not a separate bar.
+   -------------------------------------------------------------------------- */
+
+.top {
+  position: relative;
+  top: auto;
+  background: none;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  border-bottom: 0;
+  box-shadow: none;
+}
+.top .container { min-height: 64px; flex-wrap: nowrap; padding-bottom: 0; }
+.top--home .container { justify-content: flex-end; }
+
+.wordmark {
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.nav {
+  gap: var(--s-4);
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.nav a {
+  min-height: var(--tap);
+  padding: 0;
+  border-radius: 0;
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  color: var(--ink-2);
+}
+.nav a:hover { background: none; color: var(--ink); }
+.nav a[aria-current] {
+  background: none;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+}
+@media (max-width: 899px) {
+  .top .container { flex-wrap: nowrap; }
+  .top .nav { order: 0; flex-basis: auto; }
+}
+
+
+
+/* AI note: Helvetica throughout, like the rest of the page's body */
+.ai-note summary .mono {
+  font-family: var(--sans);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+}
+.ai-note .plus { font-family: var(--sans); font-size: 1.1rem; }
+
+/* Text-style CTA: one continuous underline under the words, the space and
+   the arrow. Inline (not flex) so the space between them is real text. */
+.btn-primary {
+  display: inline-block;
+  line-height: var(--tap);
+}
+.btn-primary .arrow { display: inline; transform: none !important; }
+
+
+/* --------------------------------------------------------------------------
+   Availability: its own line under the CTA, small and quiet so it never
+   competes with the call to action, but clearly a live status.
+   -------------------------------------------------------------------------- */
+
+.hero-blurb > .status {
+  display: inline-flex;
+  margin-top: var(--s-2);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+}
+.hero-cta { margin-top: var(--s-3); }
+
+/* --------------------------------------------------------------------------
+   Clean: no divider lines. Space does the separating.
+   -------------------------------------------------------------------------- */
+
+.section-head,
+.page-title,
+.case,
+.paper,
+.foot,
+.whatido-list,
+.whatido-list li,
+.ai-note,
+.research-item { border: 0 !important; }
+.section-head { padding-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   Note for AI assistants: one colour throughout, so it reads as a side note
+   addressed to someone else.
+   -------------------------------------------------------------------------- */
+
+#for-ai .ai-note,
+#for-ai .ai-note * { color: var(--note); }
+#for-ai .ai-note .link { background-image: linear-gradient(currentColor, currentColor); }
+
+/* --------------------------------------------------------------------------
+   Footer statement + supporting line
+   -------------------------------------------------------------------------- */
+
+.foot .big {
+  margin-bottom: var(--s-3);
+  max-width: 20ch;
+  font-size: clamp(2rem, 4.6vw, 4.25rem);
+  line-height: 1.06;
+  text-wrap: balance;
+}
+.foot-lede { margin: 0 0 var(--s-6); max-width: 46ch; color: var(--ink-2); }
+
+
+/* --------------------------------------------------------------------------
+   Rhythm: projects -> AI note -> footer at one even step, no dead space.
+   -------------------------------------------------------------------------- */
+
+#work { padding-bottom: var(--s-6); }
+#for-ai { margin-top: 0 !important; margin-bottom: var(--s-6); }
+
+/* --------------------------------------------------------------------------
+   Footer, reversed: deep green band with paper text, full width of the sheet.
+   -------------------------------------------------------------------------- */
+
+.foot {
+  max-width: none;
+  margin-top: 0;
+  padding: var(--s-7) max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter))) var(--s-5);
+  background: var(--green-800);
+  color: var(--on-green);
+}
+.foot .big,
+.foot .links a,
+.foot .btn-primary { color: var(--on-green); }
+.foot-lede { color: var(--on-green-2); }
+.foot .legal,
+.foot .legal a { color: var(--on-green-2); }
+.foot :where(a, button):focus-visible { outline-color: var(--on-green); }
+
+
+/* Phones: the portrait is a small, right-aligned picture (about half the
+   width), like the Liam Bennett reference, so the name stays the hero. */
+@media (max-width: 899px) {
+  /* Name as a masthead: one line, top left, centred on the nav row (64px),
+     which sits a little way down from the top edge */
+  .sheet { position: relative; --top-pad: var(--s-4); }
+  .top .container { padding-top: var(--top-pad); min-height: calc(64px + var(--top-pad)); }
+  .top--home .container { justify-content: flex-end; }
+  .hero .name {
+    position: absolute;
+    top: calc(var(--top-pad) + 32px - 0.5em);
+    left: var(--gutter);
+    margin: 0;
+    font-size: clamp(1.75rem, 9vw, 2.75rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+  .hero { padding-top: var(--s-7); row-gap: 0; }
+
+  /* Small portrait, pushed right, with real air around it */
+  .hero-photo {
+    width: 50%;                 /* same share as desktop, so it scales evenly */
+    justify-self: end;
+  }
+  .hero-photo img { aspect-ratio: 4 / 5; }
+
+  /* Text on the same left edge as the name, just under the photo */
+  .hero-blurb { margin-top: var(--s-5); }
+}
+
+
+/* --------------------------------------------------------------------------
+   Phone menu — the nav folds into a dropdown under a "Menu" button.
+   Without JS the button stays hidden and the links show inline as before.
+   -------------------------------------------------------------------------- */
+
+.menu-toggle { display: none; }
+
+@media (max-width: 899px) {
+  .top .container { position: relative; }
+
+  .js .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: var(--fs-sm);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .js .top.is-open .menu-toggle {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 1px;
+  }
+
+  .js .top .nav {
+    position: absolute;
+    top: calc(var(--top-pad, 0px) + 56px);
+    right: var(--gutter);
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    min-width: 10rem;
+    padding: var(--s-1) 0;
+    background: var(--paper);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out), visibility 0s linear 200ms;
+  }
+  .js .top.is-open .nav {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out), visibility 0s;
+  }
+  .js .top .nav a {
+    font-size: var(--fs-body);
+    color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .top .nav { transition: none; transform: none; }
+}
+
+
+/* ==========================================================================
+   Type system: one scale for the whole site. Helvetica for everything you
+   read, Space Mono only for small labels. Every piece of text is one of these:
+
+   Display  the name only                               --fs-name   400
+   H1       inner page titles                           --fs-h1     400  -0.04em
+   H2       section headings, the footer statement      --fs-h2     400  -0.03em
+   H3       sub-headings and column titles              --fs-h3     400  -0.02em
+   H4       card and list-item titles                   --fs-body   700
+   Lead     the line that introduces a section          --fs-lead   400
+   Body     paragraphs and lists                        --fs-body   400
+   Small    hero intro, nav, CTA, AI note               --fs-sm     400 (CTA 700)
+   Label    eyebrows, numbers, chips, status, legal     --fs-label  mono, caps
+   ========================================================================== */
+
+:root {
+  --fs-h1:    clamp(2.75rem, 1.8rem + 4.2vw, 5.5rem);
+  --fs-h2:    clamp(2rem, 1.3rem + 2.4vw, 3.25rem);
+  --fs-h3:    clamp(1.375rem, 1.15rem + 0.8vw, 1.875rem);
+  --fs-lead:  clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --fs-body:  1rem;
+  --fs-sm:    0.8125rem;
+  --fs-label: 0.6875rem;
+}
+
+body { font-size: var(--fs-body); line-height: 1.6; }
+
+/* H1 */
+.page-title h1 {
+  font-family: var(--sans);
+  font-size: var(--fs-h1);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* H2 */
+.section-head h2,
+.about h2,
+.whatido-intro h2,
+.foot .big {
+  font-family: var(--sans);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* H3 */
+.pillar h3,
+.howiwork h3,
+.case h2,
+.paper h2,
+.focus-card h3 {
+  font-family: var(--sans);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* H4 */
+.card .row h3,
+.ways-list h4,
+.whatido-list h3 {
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* Lead */
+.whatido-intro .whatido-focus,
+.page-title .lede,
+.section-lede,
+.foot .foot-lede {
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+}
+
+/* Body: every paragraph and list in the content reads at one size */
+.about p:not(.mono),
+.whatido-intro p:not(.mono):not(.whatido-focus),
+.pillar ul,
+.dash-list,
+.howiwork p:not(.mono),
+.ways-list p,
+.case p,
+.card p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+/* Small */
+.hero-blurb .bio,
+.nav a,
+.menu-toggle,
+.ai-body,
+.ai-note .ai-title {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+.btn-primary { font-size: var(--fs-sm); font-weight: 700; }
+
+/* Label */
+.mono,
+.about .mono,
+.num,
+.pillar .num,
+.case .num,
+.paper .num,
+.paper .meta,
+.chips li,
+.legal,
+.legal span,
+.legal a,
+.status {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hero-blurb > .status { font-size: var(--fs-label); letter-spacing: 0.06em; }
+
+/* The AI note's summary reads as a small bold title, not a label */
+.ai-note summary .mono {
+  font-family: var(--sans);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Links inside headings take the heading's tracking */
+.case h2 a,
+.paper h2 a { letter-spacing: inherit; }
+
+/* Inner-page wordmark: the name as an H4 */
+.wordmark { font-size: var(--fs-body); font-weight: 700; letter-spacing: -0.01em; }
+
+/* Never break the name inside a word, at any width */
+.name .word { white-space: nowrap; }
+
+/* The name always sits on one line */
+.name { white-space: nowrap; }
+
+/* ==========================================================================
+   What I do: an editorial 3-column grid. Every row of the section sits on
+   the same three full-width columns, and a hairline opens each group so the
+   eye reads it as one block: intro, then the three disciplines, then how we
+   work together. Leading is tighter than body copy elsewhere so each column
+   reads as a dense, designed block. Red marks the way in: labels, numbers,
+   list dashes.
+   ========================================================================== */
+
+:root { --highlight: var(--signal-text); }
+
+/* Red is the highlight: section labels and numbering across the site */
+.mono,
+.num,
+.pillar .num,
+.case .num,
+.paper .num,
+.about .mono { color: var(--highlight); }
+
+.whatido { display: block; margin-top: var(--s-8); }
+
+/* Rows: a hairline, then the columns */
+.whatido-intro,
+.wid-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  border-top: 1px solid var(--line);
+  padding-top: var(--s-3);
+}
+.wid-row { margin-top: var(--s-6); }
+.howiwork.wid-row { margin-top: var(--s-6); }
+
+.whatido-intro .mono { margin: 0; }
+.whatido-intro h2 { margin: 0 0 var(--s-3); max-width: 24ch; }
+.whatido-intro .whatido-focus { margin: 0; max-width: 52ch; line-height: 1.35; color: var(--ink); }
+
+/* Column heads: label, then title, close together */
+.pillar .num,
+.howiwork .mono { display: block; margin: 0 0 var(--s-2); }
+.pillar h3,
+.howiwork h3 { margin: 0 0 var(--s-3); }
+
+/* Tighter reading in the columns */
+.pillar ul,
+.dash-list,
+.howiwork p:not(.mono),
+.ways-list p { line-height: 1.4; }
+.howiwork p:not(.mono) { margin: 0 0 var(--s-2); max-width: none; }
+.pillar ul li,
+.dash-list li { margin-bottom: var(--s-1); padding-left: 1em; }
+.pillar ul li::before,
+.dash-list li::before { color: var(--highlight); }
+.howiwork .dash-list { max-width: none; margin-bottom: 0; }
+
+/* Ways: a stacked list inside its column */
+.ways { margin-top: 0; }
+.ways-list { grid-template-columns: 1fr !important; gap: var(--s-2); margin: 0 0 var(--s-2); }
+.ways-list h4 { margin: 0; }
+
+@media (min-width: 1024px) {
+  .whatido-intro,
+  .wid-row,
+  .howiwork.wid-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s-5);
+  }
+  /* Intro: label in the first column, statement across the other two */
+  .whatido-intro-body { grid-column: 2 / span 2; }
+}
+
+/* Column text: a compact reading size for the 3-column What I do grid.
+   14px in rem (so it still scales with browser zoom and the user's default
+   size), secondary ink at 5.3:1 contrast, 1.45 leading. */
+:root {
+  --fs-col: 0.875rem;
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+}
+.pillar ul,
+.dash-list,
+.howiwork .dash-list,
+.howiwork p:not(.mono),
+.ways-list p {
+  font-size: var(--fs-col);
+  line-height: 1.45;
+}
+.ways-list h4 { font-size: var(--fs-col); }
+.pillar h3,
+.howiwork h3 { margin-bottom: var(--s-2); }
+
+/* Lists in What I do: no markers. Each item is its own short line on one
+   clean left edge, separated by space alone, like the reference spreads. */
+.pillar ul li,
+.dash-list li,
+.howiwork .dash-list li {
+  padding-left: 0;
+  margin-bottom: var(--s-2);
+}
+.pillar ul li::before,
+.dash-list li::before { content: none; }
+
+/* Text selection: a soft sage grey from the palette (no lime) */
+.foot ::selection { background: var(--on-green); color: var(--green-900); }
+
+/* Column text includes plain paragraphs inside a column */
+.pillar p { margin: 0; font-size: var(--fs-col); line-height: 1.45; color: var(--ink-2); max-width: 40ch; }
+
+/* Where I do my best work: label | statement | fit list */
+.howiwork > .mono { margin: 0; }
+.howiwork .fit-label { margin: 0 0 var(--s-2); color: var(--ink); font-weight: 700; }
+
+/* Working together: its own section on the same grid */
+#together .pillars { margin-top: var(--s-5); }
+.together-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-4);
+  margin-top: var(--s-5);
+}
+.together-cta p { margin: 0; font-size: var(--fs-col); color: var(--ink-2); }
+@media (min-width: 1024px) {
+  .together-cta { margin-left: calc((100% - 2 * var(--s-5)) / 3 + var(--s-5)); }
 }
