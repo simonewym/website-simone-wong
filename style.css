@@ -2800,3 +2800,39 @@ body { line-height: var(--lh-text); }
 @media (min-width: 720px) {
   .whatido .pillar { min-height: calc((100cqw - var(--s-4)) / 2); }
 }
+
+/* ==========================================================================
+   Work with me boxes: steady squares at every width. Each box is at most
+   340px wide, so it never balloons in one column. The grid goes to two
+   columns as soon as two readable squares fit (based on the space the
+   boxes actually have, not the screen width), so there are no sudden jumps.
+   ========================================================================== */
+.whatido .whatido-intro-body { container-type: inline-size; }
+.whatido .pillars.pillars--2 {
+  grid-template-columns: minmax(0, 340px);
+  grid-auto-rows: 1fr;
+}
+.whatido .pillar { min-height: min(100cqw, 340px); }
+@container (min-width: 604px) {
+  .whatido .pillars.pillars--2 { grid-template-columns: repeat(2, minmax(0, 340px)); }
+  .whatido .pillar { min-height: min(calc((100cqw - var(--s-4)) / 2), 340px); }
+}
+
+/* Hero photo on desktop: a little smaller on wide screens (at most 440px
+   wide, still pinned top-right). Below ~1000px it's already under the cap,
+   so it keeps scaling smoothly from phone to desktop. */
+@media (min-width: 900px) {
+  .hero-photo { max-width: 440px; }
+}
+
+/* Hero name: a little smaller, in regular weight (400) */
+@media (min-width: 900px) {
+  .hero .name { font-size: clamp(2.25rem, 5vw, 4.25rem); }
+}
+.name,
+.hero .name { font-weight: 400; letter-spacing: -0.055em; }
+
+/* Hero photo on desktop: smaller still, at most 380px wide (about 380 x 475) */
+@media (min-width: 900px) {
+  .hero-photo { max-width: 380px; }
+}

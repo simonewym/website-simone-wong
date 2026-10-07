@@ -1,39 +1,77 @@
-# simonewongg.com — Wix → GitHub Pages migration kit
+# simonewong.com
 
-This folder contains everything pulled from your Wix site (`https://simonewongg.wixsite.com/simone`) plus a ready-to-host static version of it, so you can self-host on GitHub Pages instead of Wix.
+The personal website of **Simone Wong**, a CRM and lifecycle marketing consultant in Berlin. She works with B2C apps and subscription products on retention and growth, from strategy to delivery.
 
-## What's in here
+**Live site:** [simonewong.com](https://simonewong.com), hosted on GitHub Pages from the `main` branch.
 
-- `index.html`, `portfolio.html`, `research.html`, `personal-projects.html` — the four pages of your site, rebuilt as plain static HTML with the same content, images, and links as the Wix version.
-- `style.css` + `site.js` — the 2026 redesign: deep-green frame, paper sheet, editorial serif for the name, mono labels, a dark theme, and load/scroll/page transitions. `site.js` is progressive enhancement only.
-- `DESIGN.md` — the design system: colour identity and why, type roles, tokens, components, and the motion rules.
-- `images/` — every image from the Wix site, downloaded at full original resolution (placeholders until new headshots arrive):
-  - `simone-headshot.png`, `simone-braze-conference.jpeg` (Home)
-  - `portfolio-weatherpromise.jpg`, `portfolio-jokr-logo.webp`, `portfolio-slowly.png`, `portfolio-global-bubble-parade.png`, `portfolio-ladyplans.jpg` (Portfolio)
-  - `personal-medium.webp`, `personal-instagram-not-elsewhere.jpg`, `personal-motleysphere-sphere.png`, `personal-intent-paced-thoughts.png`, `personal-hk-summer-2016.jpg` (Personal Projects)
-- `content-export/` — the raw extracted text/links for each page as Markdown, in case you want the source content without the HTML wrapper (e.g. to paste into a different site builder or CMS).
+## What's on the site
 
-## Site structure found on Wix
+The home page is one long page, with the nav jumping between its sections:
 
-4 pages total, linked from the same nav on every page: **Home**, **Portfolio** (`/portfolio`), **Research** (`/research`), **Personal Projects** (`/personal-projects`). No hidden/extra pages were found beyond these.
+1. **Hero:** name, a short intro, the portrait, and a "Book a 15-min call" link with the availability status.
+2. **About:** background in psychology and communications, and the human-first approach to CRM.
+3. **Work with me:** what Simone does, across Strategy, Execution and Optimisation.
+4. **Working together:** three ways to engage (Retainer, Project, Advisory), as expandable rows.
+5. **Projects:** three selected projects, linking to the full list.
+6. **Contact:** email, LinkedIn and a booking link.
 
-## How to publish this on GitHub Pages
+Inner pages:
 
-1. Create a new GitHub repository (public, unless you have GitHub Pro/Enterprise for a private Pages site).
-2. Copy everything in this folder (`index.html`, `portfolio.html`, `research.html`, `personal-projects.html`, `style.css`, `images/`) into the repo root. (`content-export/` and this `README.md` are optional extras — safe to keep or drop.)
-3. Commit and push to the `main` branch.
-4. In the repo, go to **Settings → Pages**, set **Source** to "Deploy from a branch", branch `main`, folder `/ (root)`. Save.
-5. GitHub will publish it at `https://<your-username>.github.io/<repo-name>/` within a minute or two.
-6. If you want your own domain (e.g. `simonewongg.com`) instead of the github.io URL: add a `CNAME` file with just your domain name in it at the repo root, and point your domain's DNS to GitHub Pages (an `A` record to GitHub's IPs, or a `CNAME` record to `<your-username>.github.io` for a subdomain) — GitHub's Pages docs walk through the exact DNS records.
+- `portfolio.html`: all freelance projects.
+- `research.html` and `personal-projects.html`: academic work and side projects. These are built but **hidden for now**: they're not in the nav, and their sections on the home page carry the `hidden` attribute.
 
-## Things that don't carry over automatically (Wix-specific)
+## How it's built
 
-- **The "Schedule a call" and "Email me" buttons** already just link out to `cal.com` and a `mailto:` link — these work as-is, no Wix dependency.
-- **Contact/consultation booking** is already external (Cal.com), so nothing to migrate there.
-- **Analytics** — if you had Wix Analytics or a tracking pixel installed on the Wix site, that's Wix-only and isn't reflected here. Add Google Analytics/Plausible/etc. separately if you want visitor stats on the new site.
-- **SEO basics** — each page now has a `<title>`, a meta description and Open Graph title/description. Still worth adding: an Open Graph *image* (a 1200×630 preview card) and a `sitemap.xml`.
-- **Domain** — if `simonewongg.wixsite.com` (or a custom domain attached to it) is what people currently visit, remember to update/redirect that once the GitHub Pages site is live, and cancel/downgrade the Wix plan once you're confident the new site is complete.
+Plain static HTML, CSS and a little JavaScript. There's no framework, build step or dependencies, so what's in the repo is exactly what's served.
 
-## Verification
+| File | What it is |
+|---|---|
+| `index.html`, `portfolio.html`, `research.html`, `personal-projects.html` | The pages |
+| `style.css` | All styling. Later rules refine earlier ones, so the end of the file is the current state of each component |
+| `site.js` | Progressive enhancement only. The site works without it. It handles the name animation and fade-ins, the nav underline that follows the section you're reading, the header name on scroll, and the phone menu |
+| `images/` | Photos and project artwork |
+| `DESIGN.md` | **The design system:** colours, type scale, spacing, layout rules, components, motion and copy conventions. Read this before changing the design |
+| `llms.txt` | A plain-text profile for AI assistants screening freelancers, with the full detail of services, fit and tools |
+| `CNAME` | The custom domain for GitHub Pages (`simonewong.com`) |
+| `.nojekyll` | Tells GitHub Pages to serve the files as they are, without a Jekyll build |
+| `archive/` | Removed pieces kept for reference (the old orbit mind map) |
+| `content-export/` | The original text exported from the old Wix site |
 
-Every image was downloaded directly from Wix's asset CDN (`static.wixstatic.com`) at full original resolution and verified as a valid image file (correct dimensions, no corruption) before being included here. All page text was extracted directly from the live site on 2026-09-01.
+**Fonts:** Helvetica Neue / Helvetica, with Arial as the fallback, for all text. Space Mono, from Google Fonts, for the small labels.
+
+**For AI readers:** besides `llms.txt`, the home page has a collapsible note addressed to AI assistants, plus JSON-LD `Person` data in the `<head>`.
+
+## Run it locally
+
+Any static file server works. From the project folder:
+
+```bash
+python3 -m http.server 4173
+```
+
+Then open [http://localhost:4173](http://localhost:4173). The same server is set up as the `site` preview in `.claude/launch.json`.
+
+## Publish a change
+
+GitHub Pages publishes whatever is on `main`, so committing and pushing is all it takes:
+
+```bash
+git push origin main
+```
+
+The live site updates within a minute or two.
+
+## Domain
+
+`simonewong.com` is registered at Namecheap and points at GitHub Pages: four `A` records for `@` to GitHub's IPs, and a `CNAME` for `www` to `simonewym.github.io`. Email for `work@simonewong.com` runs on Google Workspace through the domain's MX records, which must be kept whenever the DNS is edited.
+
+## Accessibility and performance
+
+- Every colour pair meets WCAG AA contrast. The checked values are in `DESIGN.md`.
+- The site works fully by keyboard and without JavaScript. The expandable rows are native `<details>` elements.
+- All motion is a plain fade and switches off under `prefers-reduced-motion`.
+- Layouts are checked from 320px phones to 1920px screens with no sideways scrolling.
+
+---
+
+© Simone Wong. The content and photos are personal and not licensed for reuse.
