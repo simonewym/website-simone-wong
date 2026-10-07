@@ -2184,3 +2184,272 @@ body { font-size: var(--fs-body); line-height: 1.6; }
 @media (min-width: 1024px) {
   .together-cta { margin-left: calc((100% - 2 * var(--s-5)) / 3 + var(--s-5)); }
 }
+
+/* ==========================================================================
+   Line height: one rhythm for the whole site. Three values only:
+     1.0  H1 and the name (big type, tight)
+     1.1  H2 and H3
+     1.5  everything you read: lead, body, column, small, labels, H4
+   Buttons keep line-height: var(--tap) for a 44px tap target; that is the
+   hit area, not text spacing.
+   ========================================================================== */
+
+:root {
+  --lh-tight: 1;
+  --lh-heading: 1.1;
+  --lh-text: 1.5;
+}
+
+body { line-height: var(--lh-text); }
+
+.page-title h1 { line-height: var(--lh-tight); }
+
+.section-head h2,
+.about h2,
+.whatido-intro h2,
+.foot .big,
+.pillar h3,
+.howiwork h3,
+.case h2,
+.paper h2,
+.focus-card h3 { line-height: var(--lh-heading); }
+
+/* H4 and all reading text */
+.card .row h3,
+.ways-list h4,
+.whatido-list h3,
+.whatido-intro .whatido-focus,
+.page-title .lede,
+.section-lede,
+.foot .foot-lede,
+.about p:not(.mono),
+.case p,
+.card p,
+.pillar p,
+.pillar ul,
+.dash-list,
+.howiwork .dash-list,
+.howiwork p:not(.mono),
+.howiwork .fit-label,
+.ways-list p,
+.together-cta p,
+.hero-blurb .bio,
+.nav a,
+.menu-toggle,
+.wordmark,
+.ai-body,
+.ai-note .ai-title,
+.ai-note summary .mono,
+.mono,
+.num,
+.chips li,
+.legal,
+.status { line-height: var(--lh-text); }
+
+/* About: no heading, so the first paragraph opens the section at Lead size */
+.about .mono { margin: 0 0 var(--s-3); }
+.about p.about-lead {
+  margin: 0 0 var(--s-3);
+  max-width: 34ch;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-text);
+  color: var(--ink);
+}
+
+/* About: one square photo in the first of three columns, the text across
+   the other two (the same grid as What I do) */
+.about .photos { grid-template-columns: 1fr; }
+.about .photos img {
+  aspect-ratio: 1 / 1;
+  object-position: 62% 50%;   /* centre on the two speakers */
+}
+.about p:not(.mono) { max-width: 60ch; }
+@media (min-width: 720px) {
+  .about { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--s-5); align-items: start; }
+}
+@media (min-width: 1024px) {
+  .about {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s-5);
+  }
+  .about > :last-child { grid-column: 2 / span 2; }
+}
+
+/* About: column-size text, the first sentence in bold at the same size, and
+   more air between photo and text. The photo is trimmed inside its column so
+   the text keeps its place on the grid. */
+.about p:not(.mono),
+.about p.about-lead {
+  font-size: var(--fs-col);
+  line-height: var(--lh-text);
+  max-width: 62ch;
+}
+.about p.about-lead { font-weight: 400; color: var(--ink-2); }
+.about p.about-lead strong { font-weight: 700; color: var(--ink); }
+.about { row-gap: var(--s-6); }
+@media (min-width: 720px) {
+  .about .photos img { width: calc(100% - var(--s-6)); }
+}
+
+/* About: bold sentences are dark green, like the opener */
+.about p strong { font-weight: 700; color: var(--ink); }
+
+/* Phones: the text comes first, the photo after it */
+@media (max-width: 719px) {
+  .about > :last-child { order: -1; }
+}
+
+/* Good fit: heading in column one, the four points as a 2x2 across two and three */
+.fit h3 { margin: 0; }
+.fit .fit-list { margin: 0; }
+@media (min-width: 720px) {
+  .fit .fit-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s-5);
+  }
+}
+@media (min-width: 1024px) {
+  .fit .fit-list { grid-column: 2 / span 2; }
+}
+
+/* Working together: who each option suits, under its description */
+.pillar p.pillar-fit { margin-top: var(--s-3); color: var(--ink-2); }
+.pillar p.pillar-fit strong { color: var(--ink); font-weight: 700; }
+
+/* Working together: a full-width light sage band so it stands out from the
+   paper, without competing with the deep green footer below it.
+   Contrast on the band: ink 9.7:1, ink-2 4.7:1, red labels 4.9:1. */
+:root { --band: #e2e8de; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --band: #18211c; }
+}
+:root[data-theme="dark"] { --band: #18211c; }
+
+#together {
+  max-width: none;
+  margin-block: var(--s-7) var(--s-6);
+  padding: var(--s-7) max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
+  background: var(--band);
+}
+/* the band's edge already opens the section, so no hairline at its top */
+#together .whatido-intro { border-top: 0; padding-top: 0; }
+
+/* Working together: the call to action sits under the intro, before the options */
+#together .together-cta { margin: var(--s-3) 0 0; }
+@media (min-width: 1024px) { #together .together-cta { margin-left: 0; } }
+
+/* ==========================================================================
+   Services (Working together): "Services" on the left; on the right the
+   intro, the call to action, then the three options as expandable rows.
+   Built on <details>/<summary>, so it works by keyboard, with screen
+   readers and without JS. A hairline separates each row; + turns to −.
+   ========================================================================== */
+
+.services {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+.services h2 { margin: 0; }
+.services-body .whatido-focus { margin: 0; max-width: 52ch; color: var(--ink-2); }
+#together .together-cta { margin: var(--s-3) 0 0; }
+
+.acc {
+  margin-top: var(--s-6);
+  border-bottom: 1px solid var(--line);
+}
+.acc-item { border-top: 1px solid var(--line); }
+
+.acc-item > summary {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: var(--s-4);
+  padding: var(--s-3) 0;
+  cursor: pointer;
+  list-style: none;
+}
+.acc-item > summary::-webkit-details-marker { display: none; }
+.acc-item > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.acc-item > summary h3 { margin: 0; }
+.acc-tag {
+  font-size: var(--fs-col);
+  line-height: var(--lh-text);
+  color: var(--ink-2);
+}
+
+/* the + / − sign, drawn with two hairlines */
+.acc-icon {
+  position: relative;
+  align-self: center;
+  width: 14px;
+  height: 14px;
+}
+.acc-icon::before,
+.acc-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: var(--ink);
+  transition: transform 250ms var(--ease-out);
+}
+.acc-icon::after { transform: rotate(90deg); }
+.acc-item[open] .acc-icon::after { transform: rotate(0deg); }   /* + becomes − */
+.acc-item > summary:hover .acc-icon::before,
+.acc-item > summary:hover .acc-icon::after { background: var(--highlight); }
+
+.acc-body { padding: 0 0 var(--s-4); }
+.acc-body p {
+  margin: 0 0 var(--s-2);
+  max-width: 60ch;
+  font-size: var(--fs-col);
+  line-height: var(--lh-text);
+  color: var(--ink-2);
+}
+.acc-body p:last-child { margin-bottom: 0; }
+.acc-body .acc-fit strong { color: var(--ink); font-weight: 700; }
+
+/* Phones: the tagline drops under the option name */
+@media (max-width: 599px) {
+  .acc-item > summary { grid-template-columns: minmax(0, 1fr) auto; row-gap: 2px; }
+  .acc-tag { grid-row: 2; grid-column: 1; }
+  .acc-icon { grid-row: 1; grid-column: 2; }
+}
+
+@media (min-width: 1024px) {
+  .services {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s-5);
+  }
+  .services-body { grid-column: 2 / span 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acc-icon::before, .acc-icon::after { transition: none; }
+}
+
+/* Services: type follows the system: H2, Lead, H3 */
+.services h2 {
+  font-family: var(--sans);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: var(--lh-heading);
+  letter-spacing: -0.03em;
+}
+.services-body p.whatido-focus {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-text);
+}
+.acc-item > summary h3 {
+  font-family: var(--sans);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: var(--lh-heading);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}

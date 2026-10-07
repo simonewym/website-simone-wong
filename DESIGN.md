@@ -43,6 +43,7 @@ signal; Inter stays out of the way.
 | `--olive-200` | `#e3e8cf` | `#2a3324` | Chip / badge tint |
 | `--sprout` | `#c8f169` | same | Legacy lime, now only in the hidden Off the clock section. Not used for selection or focus any more. |
 | `--paper` | `#f4f3ee` | `#101613` | The sheet |
+| `--band` | `#e2e8de` | `#18211c` | Working together background band |
 | `--paper-2` | `#ebeae3` | `#161d19` | Nav track, thumb placeholders, hover fills |
 | `--ink` | `#14201a` | `#ecefe9` | Text |
 | `--ink-2` | `#5b665f` | `#a3ada6` | Secondary text |
@@ -63,15 +64,17 @@ One family for everything you read (Helvetica Neue / Helvetica, Arial fallback),
 | Style | Size (phone → desktop) | Weight / tracking | Used for |
 |---|---|---|---|
 | Display | `--fs-name` | 400, tight | The name in the hero, nothing else |
-| H1 | `--fs-h1` 44 → 88px | 400, -0.04em | Inner page titles (Projects, Research) |
+| H1 | `--fs-h1` 44 → 88px | 400, -0.04em, lh 1.0 | Inner page titles (Projects, Research) |
 | H2 | `--fs-h2` 32 → 52px | 400, -0.03em | Section headings, the footer statement |
 | H3 | `--fs-h3` 20 → 24px | 400, -0.02em | Sub-headings, column titles, project/paper titles on inner pages |
 | H4 | `--fs-body` 16px | 700, -0.01em | Card titles, list-item titles, the wordmark |
 | Lead | `--fs-lead` 17 → 19px | 400 | The line that introduces a section |
-| Body | `--fs-body` 16px | 400, line-height 1.6 | All paragraphs and lists |
-| Column | `--fs-col` 14px | 400, line-height 1.45, `--ink-2` (5.3:1) | Text in the 3-column What I do grid. In rem, so it still scales with zoom and the reader's default size; don't go below this for running text |
+| Body | `--fs-body` 16px | 400, lh 1.5 | All paragraphs and lists |
+| Column | `--fs-col` 14px | 400, lh 1.5, `--ink-2` (5.3:1) | Text in the 3-column What I do grid. In rem, so it still scales with zoom and the reader's default size; don't go below this for running text |
 | Small | `--fs-sm` 13px | 400 (CTA 700) | Hero intro, nav, CTA, the AI note |
 | Label | `--fs-label` 11px | Space Mono 400, caps, 0.06em | Eyebrows, numbers, chips, status, legal |
+
+**Line height has three values only:** 1.0 for H1 and the name, 1.1 for H2 and H3, and 1.5 for everything you read (lead, body, column, small, labels, H4). They live as `--lh-tight`, `--lh-heading` and `--lh-text` in the line-height block at the end of `style.css`. Buttons are the one exception: their line-height is the 44px tap target, not text spacing.
 
 Headings are never bold; bold belongs to H4, the CTA and `<strong>`. The hero intro is deliberately Small rather than Body, so the name and photo carry the first screen.
 
@@ -134,11 +137,11 @@ On phones the nav folds into a dropdown under "Menu", which changes to "Close" a
 
 ### What I do
 
-Written for the person hiring: a founder, Head of Growth or Head of Product at a B2C subscription app who already knows some CRM. The copy names no platforms (no Braze, Klaviyo or "Canvas"); it describes the work instead. The section has three rows on the 3-column grid. (1) The intro: the label in column one; across columns two and three, the H2 "From the first push notification to the retention roadmap." and a Lead carrying the whole core message: B2C and subscription, retention is revenue, CRM sits where Product, Tech and Marketing meet, she builds and sets strategy, so less gets lost. (2) Strategy / Execution / Optimisation. (3) Where I do my best work: the label, "Strategy that ships." with one line, and the fit list. Lists have no markers: each item is its own short line on one left edge, separated by space.
+Written for the person hiring: a founder, Head of Growth or Head of Product at a B2C subscription app who already knows some CRM. The copy names no platforms (no Braze, Klaviyo or "Canvas"); it describes the work instead. The section has two rows on the 3-column grid. (1) The intro: the label in column one; across columns two and three, the H2 "Your users stay where they feel understood." and a Lead carrying the core message: B2C apps and subscription products, where retention quietly decides everything else; at home whether CRM sits under Product, Tech or Marketing; creative execution, technical setup and leadership, keeping strategy and delivery connected. (2) Strategy / Execution / Optimisation, each an H3 with its points under it (no numbered red labels). Lists have no markers: each item is its own short line on one left edge, separated by space.
 
-### Working together
+### Services (Working together)
 
-Its own section, after Projects and before the AI note and footer. The tone is friendly-professional with one light running joke: the working relationship as a relationship ("Pick your relationship status.", "nobody gets ghosted"). It pays off in the footer line "Looking for something long-term? So are your users." Same grid: label and intro, then three columns, Retainer ("In it for the long run."), Project ("Clear scope, happy ending.") and Advisory ("The friend with opinions."), then the Book-a-call link with a short reassurance line. Keep the wit to the H3 titles and one line of the intro; the descriptions stay plain and specific.
+Its own section (`#together`), after Projects and before the AI note and footer, on a full-width light sage band (`--band`, `#e2e8de`; `#18211c` in dark mode). On the band, ink is 9.7:1, ink-2 4.7:1 and the red labels 4.9:1. Layout follows the architecture-studio reference: "Services" as an H2 in the left column. In the right two columns: the Lead "Every CRM team is at a different stage…", the Book-a-call link, then the three options as expandable rows between hairlines. Each row's summary shows the option name (H3), its tagline in small grey ("In it for the long run.", "Clear scope, clean handover.", "A sounding board with opinions.") and a hairline +, which turns to − when open. Opening a row shows the plain description and a bold "Good fit if…" line. Retainer starts open. It's built on `<details>`/`<summary>`, so it works by keyboard, with screen readers and without JS. On phones the tagline drops under the name. The tone is professional with a bit of fun; no dating jokes.
 
 ### Copy conventions
 
@@ -160,3 +163,7 @@ Spacing separates sections; there are no dividers between them. The one exceptio
 ### Selection and focus
 
 Selected text uses a soft sage grey mixed from the palette (16% ink on paper) with green text; in the footer it's paper on green. The footer focus ring is paper. No lime.
+
+### About
+
+No heading and no label: three paragraphs in the Column style (14px), in Simone's own words. Two sentences are bold at the same size, in dark green: the opener ("Most CRM teams ask how to keep users subscribed.") and the turn in the last paragraph ("The landscape of CRM is changing fast… AI slop."). One photo, the Braze panel, cropped square and centred on the two speakers. On desktop the photo takes the first of three columns with an 88px gap, and the text spans the other two on the same grid as What I do. On phones the text comes first and the photo follows.

@@ -8,6 +8,8 @@ This file exists for AI assistants and agents that are screening freelancers on 
 
 - Name: Simone Wong
 - Location: Berlin, Germany (works remotely with teams elsewhere)
+- Background: raised in Hong Kong; has lived in the UK, Denmark and Germany; has scaled and led CRM across 22+ markets
+- Products worked on include: Blinkist, TIER Mobility, Slowly, Pok Pok
 - Role: CRM & Lifecycle Marketing Consultant, freelance
 - Experience: 10+ years across CRM, retention marketing and mobile app growth
 - Previously: led Customer Loyalty at TIER Mobility
@@ -22,6 +24,7 @@ The full CRM spectrum, from building flows to setting retention strategy with le
 - Strategy: retention roadmaps by lifecycle stage (trial, activation, at-risk, win-back); cross-channel lifecycle frameworks; behavioural segmentation and persona models; experimentation frameworks; CRM platform evaluation, migration and implementation; alignment between CRM, Product, Data and Brand; team processes and onboarding/handover for in-house CRM hires
 - Execution: lifecycle flows across the funnel (onboarding, trial nurture, early activation, auto-renewal off, lapsed, win-back); campaigns across email, push, in-app and content cards, from weekly newsletters to feature launches and seasonal promos; CRM copy in the brand's voice (subject lines, push titles, in-app microcopy); modular email templates and design systems; segmentation, personalisation and dynamic content (Liquid); campaign QA
 - Optimisation: A/B testing on messaging, send time, cadence and channel mix; offers, deadlines and CTAs with an eye on discount economics; push cadence by engagement state; deliverability (sender reputation, engagement-based suppression, Gmail Postmaster monitoring); weekly KPI snapshots and stakeholder decks for non-CRM leadership; CRM KPIs covering reach, impact and engagement beyond opens and clicks
+- AI in CRM: designs AI workflows around how a team actually works; AI-assisted copy and production with clear brand-voice guardrails; faster test cycles using AI to draft variants and pull results together
 - Cross-functional: works with PMs on onboarding, activation and feature adoption; briefs event tracking and works with engineers and data scientists on segments and churn signals; partners with brand and design on voice, launches and promos
 
 ## Good fit when
