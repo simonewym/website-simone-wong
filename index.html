@@ -36,15 +36,17 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<div class="sheet">
+<div class="sheet" id="top">
 
   <header class="top top--home">
     <div class="container">
+      <a class="wordmark" href="#top">Simone Wong</a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav class="nav" id="site-nav" aria-label="Main">
-        <a href="index.html" aria-current="page">About</a>
-        <a href="portfolio.html">Projects</a>
-        <a href="mailto:work@simonewong.com">Contact</a>
+        <a href="#about">About</a>
+        <a href="#work-with-me">Work with me</a>
+        <a href="#work">Projects</a>
+        <a href="#contact">Contact</a>
         <!-- Hidden for now: <a href="research.html">Research</a> <a href="personal-projects.html">Personal</a> -->
       </nav>
     </div>
@@ -53,7 +55,7 @@
   <main id="main">
 
     <!-- Hero: name, intro, portrait, call to action ----------------------- -->
-    <section class="hero container" data-nav="index.html">
+    <section class="hero container" data-nav="#about">
       <h1 class="name" data-split>Simone Wong</h1>
 
       <figure class="hero-photo reveal" style="--i:1">
@@ -70,65 +72,98 @@
     </section>
 
     <!-- About + background ------------------------------------------------- -->
-    <section class="section container" id="about">
+    <section class="section container" id="about" data-nav="#about">
       <div class="about">
         <div class="photos reveal">
           <img src="images/simone-braze-conference.jpeg" alt="Simone Wong speaking on a panel at a Braze conference" width="480" height="600" loading="lazy">
         </div>
         <div class="reveal" style="--i:1">
           <p class="about-lead"><strong>Most CRM teams ask how to keep users subscribed.</strong> I start with what your product actually means to them, and whether they feel understood along the way.</p>
-          <p>That question comes from a background in psychology and communications, and a long fascination with why people form habits and build relationships with each other and their devices (often for reasons they couldn't name in a survey). Over the past decade, I've turned that understanding into CRM, leading and scaling lifecycle strategies for products like Blinkist, TIER Mobility and Slowly across 22+ markets.</p>
-          <p><strong>The landscape of CRM is changing fast, and your users' lock screens don't need more AI slop.</strong> I help your brand stand out with a human-first, AI-backed strategy, where every interaction carries intention and emotion, and converts into direct results.</p>
+          <p>With a background in psychology and communications, I love learning why people form habits and build relationships with each other and their devices (often for reasons they couldn't name in a survey). Over the past decade, I've turned that understanding into CRM, leading and scaling lifecycle strategies for products like Blinkist, TIER Mobility and Slowly across 22+ markets.</p>
+          <p>The landscape of CRM is changing fast, and I know your users' lock screens don't need more AI slop. I help your brand stand out with a human-first, psychology &amp; AI-backed strategy, where every interaction carries intention and emotion, and converts into direct results.</p>
         </div>
       </div>
 
       <!-- What I do -->
-      <div class="whatido">
+      <div class="whatido" id="work-with-me" data-nav="#work-with-me">
         <div class="whatido-intro reveal">
-          <p class="mono">What I do</p>
+          <h2 class="section-title">CRM for B2C apps and subscription products across strategy and delivery.</h2>
           <div class="whatido-intro-body">
-          <h2>Your users stay where they feel understood.</h2>
-          <p class="whatido-focus">I work on CRM for B2C apps and subscription products, where retention quietly decides everything else. Whether your CRM fits under Product, Tech or Marketing, I'll be at home in all three. I bring experience across creative execution, technical setup and leadership, ensuring strategy and delivery stay closely connected in whatever way your team needs.</p>
+          <ol class="pillars pillars--2" data-stagger>
+            <li class="pillar reveal">
+              <svg class="pillar-icon" viewBox="6 6 36 36" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="8"/><circle cx="24" cy="24" r="3"/></svg>
+              <h3>Strategy</h3>
+              <p>Retention roadmaps for every stage, from trial to win-back. Behavioural segments and personas your whole programme can build on. Platform selection and migration, without disrupting live sends. And AI workflows that fit the way your team already works.</p>
+            </li>
+            <li class="pillar reveal">
+              <svg class="pillar-icon" viewBox="6 6 36 36" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false"><path d="M24 6 42 15 24 24 6 15Z"/><path d="M24 15 42 24 24 33 6 24Z"/><path d="M24 24 42 33 24 42 6 33Z"/></svg>
+              <h3>Execution</h3>
+              <p>Automated journeys, from the welcome series to renewal reminders. Campaigns across email, push and in-app, written in your brand voice. Modular templates and personalisation, checked before every send. And AI-assisted production that scales without losing your voice.</p>
+            </li>
+            <li class="pillar reveal">
+              <svg class="pillar-icon" viewBox="6 6 36 36" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false"><circle cx="18" cy="18" r="12"/><circle cx="30" cy="30" r="12"/></svg>
+              <h3>Optimisation</h3>
+              <p>A/B tests on message, timing and channel. Offers and cadence that convert, without wearing users out. Deliverability, plus KPIs that tie CRM to revenue. And faster testing cycles, with AI handling the heavy lifting.</p>
+            </li>
+          </ol>
           </div>
         </div>
-
-        <ol class="pillars wid-row" data-stagger>
-          <li class="pillar reveal">
-            <h3>Strategy</h3>
-            <ul>
-              <li>Retention roadmaps that set priorities for every lifecycle stage, from trial to win-back.</li>
-              <li>Behavioural segments and personas your whole programme works from.</li>
-              <li>Platform selection and migration, plus the team processes that keep it all running.</li>
-              <li>AI workflows designed around how your team actually works, so a small team can ship more without cutting corners.</li>
-            </ul>
-          </li>
-          <li class="pillar reveal">
-            <h3>Execution</h3>
-            <ul>
-              <li>Automated journeys, from the welcome series to renewal reminders.</li>
-              <li>Campaigns across email, push, in-app and content cards, written in your brand voice.</li>
-              <li>Modular templates and Liquid personalisation, QA'd before every send.</li>
-              <li>AI-assisted copy and production with clear guardrails, so output scales and your brand voice stays intact.</li>
-            </ul>
-          </li>
-          <li class="pillar reveal">
-            <h3>Optimisation</h3>
-            <ul>
-              <li>A/B tests on message, timing and channel mix.</li>
-              <li>Offers and push cadence tuned to convert, without fatiguing users or training them to wait for a discount.</li>
-              <li>Deliverability, and KPIs that tie CRM to revenue and renewals, not just opens and clicks.</li>
-              <li>Faster test cycles, using AI to draft variants and pull results together, so learnings turn into action sooner.</li>
-            </ul>
-          </li>
-        </ol>
       </div>
 
     </section>
 
+
+    <!-- Working together --------------------------------------------------- -->
+    <section class="section container" id="together" data-nav="#work-with-me">
+      <div class="services">
+        <h2 class="section-title reveal">Working together</h2>
+        <div class="services-body reveal" style="--i:1">
+          <p class="section-lead">Wherever your CRM team stands today, I'll meet you there. Choose the setup that fits your goals and adjust as your needs evolve.</p>
+          <div class="together-cta">
+            <a class="btn btn-primary" href="https://cal.com/simone-wong/15min" target="_blank" rel="noopener">Book a 15-min call <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+          <p class="status"><span class="pulse" aria-hidden="true"></span> Available for new projects</p>
+
+          <div class="acc">
+            <details class="acc-item" open>
+              <summary>
+                <h3>Retainer</h3>
+                <span class="acc-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="acc-body">
+                <p>I look after your CRM week to week: the sends, the roadmap and the numbers behind them. Your CRM lead, without the six-month hiring process.</p>
+                <p class="acc-fit"><strong>Good fit if</strong> you need someone to own the lifecycle, or you have a strategy but not the capacity to execute it.</p>
+              </div>
+            </details>
+            <details class="acc-item">
+              <summary>
+                <h3>Project</h3>
+                <span class="acc-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="acc-body">
+                <p>A lifecycle audit, a flow rebuild, a platform migration or a testing programme. Scoped up front, done properly and handed over with everything your team needs to run it.</p>
+                <p class="acc-fit"><strong>Good fit if</strong> your CRM is live but nobody has audited what's working, or you're hiring in-house and want them to inherit a solid foundation.</p>
+              </div>
+            </details>
+            <details class="acc-item">
+              <summary>
+                <h3>Advisory</h3>
+                <span class="acc-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="acc-body">
+                <p>Regular sessions with your team to pressure-test the strategy, review work before it ships and get stuck decisions moving again.</p>
+                <p class="acc-fit"><strong>Good fit if</strong> your team runs CRM day to day and wants senior input without a full-time hire.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Selected work ----------------------------------------------------- -->
-    <section class="section container" id="work" data-nav="portfolio.html">
+    <section class="section container" id="work" data-nav="#work">
       <div class="section-head reveal">
-        <h2>Projects</h2>
+        <h2 class="section-title">Projects</h2>
         <a class="link" href="portfolio.html">All projects →</a>
       </div>
       <div class="cards" data-stagger>
@@ -147,55 +182,6 @@
           <div class="row"><h3>Slowly</h3><span class="arrow" aria-hidden="true">↗</span></div>
           <ul class="chips"><li>App UX copy</li><li>Press</li><li>Social</li></ul>
         </a>
-      </div>
-    </section>
-
-    <!-- Working together --------------------------------------------------- -->
-    <section class="section container" id="together">
-      <div class="services">
-        <h2 class="reveal">Services</h2>
-        <div class="services-body reveal" style="--i:1">
-          <p class="whatido-focus">Every CRM team is at a different stage, so the way we work together should fit yours. Start where it makes sense now and change gear whenever needed.</p>
-          <div class="together-cta">
-            <a class="btn btn-primary" href="https://cal.com/simone-wong/15min" target="_blank" rel="noopener">Book a 15-min call <span class="arrow" aria-hidden="true">→</span></a>
-          </div>
-
-          <div class="acc">
-            <details class="acc-item" open>
-              <summary>
-                <h3>Retainer</h3>
-                <span class="acc-tag">In it for the long run.</span>
-                <span class="acc-icon" aria-hidden="true"></span>
-              </summary>
-              <div class="acc-body">
-                <p>I look after your CRM week to week: the sends, the roadmap and the numbers behind them. Your CRM lead, without the six-month hiring process.</p>
-                <p class="acc-fit"><strong>Good fit if</strong> you need someone to own the lifecycle, or you have a strategy but not the capacity to execute it.</p>
-              </div>
-            </details>
-            <details class="acc-item">
-              <summary>
-                <h3>Project</h3>
-                <span class="acc-tag">Clear scope, clean handover.</span>
-                <span class="acc-icon" aria-hidden="true"></span>
-              </summary>
-              <div class="acc-body">
-                <p>A lifecycle audit, a flow rebuild, a platform migration or a testing programme. Scoped up front, done properly and handed over with everything your team needs to run it.</p>
-                <p class="acc-fit"><strong>Good fit if</strong> your CRM is live but nobody has audited what's working, or you're hiring in-house and want them to inherit a solid foundation.</p>
-              </div>
-            </details>
-            <details class="acc-item">
-              <summary>
-                <h3>Advisory</h3>
-                <span class="acc-tag">A sounding board with opinions.</span>
-                <span class="acc-icon" aria-hidden="true"></span>
-              </summary>
-              <div class="acc-body">
-                <p>Regular sessions with your team to pressure-test the strategy, review work before it ships and get stuck decisions moving again.</p>
-                <p class="acc-fit"><strong>Good fit if</strong> your team runs CRM day to day and wants senior input without a full-time hire.</p>
-              </div>
-            </details>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -300,9 +286,8 @@
 
   </main>
 
-  <footer class="foot container">
-    <p class="big reveal">Looking for something long-term? So are your users.</p>
-    <p class="foot-lede reveal">Retention is just a relationship that keeps showing up. I build that for your users, and I bring it to working with you: honest, invested, and still here after the launch.</p>
+  <footer class="foot container" id="contact" data-nav="#contact">
+    <h2 class="section-title reveal">Contact</h2>
     <div class="foot-grid reveal" style="--i:1">
       <div class="links">
         <a class="link" href="mailto:work@simonewong.com">work@simonewong.com</a>

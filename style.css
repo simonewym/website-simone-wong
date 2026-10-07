@@ -2453,3 +2453,350 @@ body { line-height: var(--lh-text); }
   letter-spacing: -0.02em;
   color: var(--ink);
 }
+
+/* About photo: a 4:3 landscape rectangle, close to the original framing */
+.about .photos img { aspect-ratio: 4 / 3; object-position: 55% 50%; }
+
+/* AI note: neutral grey instead of olive (5.2:1 on paper, 7.2:1 in dark) */
+:root { --note: #666662; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --note: #a3a3a0; }
+}
+:root[data-theme="dark"] { --note: #a3a3a0; }
+
+/* What I do: each discipline is a bordered box; the boxes do the grouping,
+   so the section's divider lines are removed */
+.whatido .whatido-intro,
+.whatido .pillars.wid-row {
+  border-top: 0;
+  padding-top: 0;
+}
+.whatido .pillar {
+  border: 1px solid var(--line);
+  padding: var(--s-4);
+}
+
+/* What I do: thin line icons above each discipline (inline SVG, ink colour) */
+.pillar-icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 0 var(--s-4);
+  color: var(--ink);
+  overflow: visible;
+}
+.pillar-icon * { vector-effect: non-scaling-stroke; }
+
+/* Icons: a finer hairline stroke */
+.pillar-icon * { stroke-width: 0.6px; }
+
+/* What I do: "What I do" label on the left; the intro and the boxes on the
+   right, the boxes as a 2-column grid (Strategy | Execution, then
+   Optimisation on the second row) */
+.whatido .pillars.pillars--2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+@media (min-width: 720px) {
+  .whatido .pillars.pillars--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.whatido .whatido-focus { margin-top: 0; }
+
+/* Phones: the About photo matches the hero portrait, half width and pushed
+   right, so it's present but not dominant */
+@media (max-width: 719px) {
+  .about .photos { width: 50%; justify-self: end; }
+  .about .photos img { width: 100%; }
+}
+
+/* What I do: more air between the heading and the boxes */
+.whatido .whatido-intro-body h2 { margin: 0; }
+.whatido .whatido-intro-body h2 + .pillars--2 { margin-top: var(--s-6); }
+
+/* What I do: discipline titles in medium weight */
+.whatido .pillar h3 { font-weight: 500; letter-spacing: -0.015em; }
+
+/* Column text (14px) reads slightly tighter: 1.4 instead of 1.5 */
+:root { --lh-col: 1.4; }
+.whatido .pillar p,
+.about p:not(.mono),
+.about p.about-lead,
+.acc-body p,
+.acc-tag { line-height: var(--lh-col); }
+
+/* The boxes now sit inside the intro block, so restate their Column style
+   above the intro's paragraph rule */
+.whatido .whatido-intro .pillars .pillar p {
+  margin: 0;
+  max-width: none;
+  font-size: var(--fs-col);
+  line-height: var(--lh-col);
+  color: var(--ink-2);
+}
+
+/* Services: the availability line under the call to action, as in the hero */
+#together .status {
+  display: inline-flex;
+  margin: var(--s-2) 0 0;
+  font-size: var(--fs-label);
+  letter-spacing: 0.06em;
+}
+
+/* Icons: every drawing fills its box edge to edge (viewBox cropped to the
+   drawing), so the gap to the heading is the same 16px for all three */
+.pillar-icon { width: 36px; height: 36px; margin: 0 0 var(--s-3); }
+
+/* What I do: all three boxes the same size (every grid row as tall as the tallest box) */
+@media (min-width: 720px) {
+  .whatido .pillars.pillars--2 { grid-auto-rows: 1fr; }
+}
+.whatido .pillars.pillars--2 { grid-auto-rows: 1fr; }
+
+/* CTA vs status: the call to action leads. The CTA moves up to body size
+   (16px bold, firmer underline); the availability line keeps its pulsing red
+   dot but its text drops to secondary grey so it no longer competes. */
+.btn-primary {
+  font-size: var(--fs-body);
+  text-decoration-thickness: 1.5px;
+}
+.btn-primary:hover { text-decoration-thickness: 2.5px; }
+.status,
+.hero-blurb > .status,
+#together .status { color: var(--ink-2); }
+
+/* Working together rows: tagline sits on the right, next to the +/− */
+@media (min-width: 600px) {
+  .acc-tag { justify-self: end; text-align: right; }
+}
+
+/* Working together rows: titles in medium weight, matching the What I do boxes */
+.acc-item > summary h3 { font-weight: 500; letter-spacing: -0.015em; }
+
+/* Working together rows: no taglines any more, so title left, sign right */
+.acc-item > summary { grid-template-columns: minmax(0, 1fr) auto; }
+
+/* Footer: contact only, on the paper like the rest of the page */
+.foot {
+  margin-top: var(--s-6);
+  padding-top: var(--s-6);
+  padding-bottom: var(--s-5);
+  background: none;
+  color: var(--ink);
+}
+.foot .links a,
+.foot .btn-primary { color: var(--ink); }
+.foot .legal,
+.foot .legal a { color: var(--ink-2); }
+.foot :where(a, button):focus-visible { outline-color: var(--ink); }
+.foot ::selection { background: color-mix(in srgb, var(--ink) 16%, var(--paper)); color: var(--ink); }
+
+/* ==========================================================================
+   Persistent header: "Simone Wong" on the left, the nav on the right, stuck
+   to the top of every page. On the home page (desktop) the small name fades
+   in once the big hero name has scrolled away. A hairline appears once the
+   page has scrolled.
+   ========================================================================== */
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--paper);
+  transition: box-shadow 200ms var(--ease-out);
+}
+.top.is-stuck { box-shadow: 0 1px 0 var(--line); }
+.top .container,
+.top--home .container { justify-content: space-between; }
+
+.wordmark {
+  font-family: var(--sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: var(--lh-heading);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.top--home .wordmark { transition: opacity 250ms var(--ease-out); }
+@media (min-width: 900px) {
+  .js .top--home:not(.show-name) .wordmark { opacity: 0; pointer-events: none; }
+}
+
+/* Sections land below the sticky header when you jump to them */
+[id] { scroll-margin-top: 88px; }
+
+/* ----- Phones: the header carries the name; the hero name is for screen
+   readers only (it stays the page's H1) ----- */
+@media (max-width: 899px) {
+  .sheet { --top-pad: var(--s-3); }
+  .wordmark { font-size: clamp(1.5rem, 6.5vw, 2rem); font-weight: 400; letter-spacing: -0.035em; }
+  .hero .name {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .hero { padding-top: var(--s-6); }
+}
+
+/* ==========================================================================
+   Section titles: every titled section uses the same pattern, an H2 in the
+   left column (matching its nav label) and the content in the two columns
+   on the right, opened by a Lead.
+   ========================================================================== */
+
+.section-title {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: var(--lh-heading);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.section-lead,
+.whatido .whatido-intro-body p.section-lead,
+.services-body p.section-lead {
+  margin: 0;
+  max-width: 52ch;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-text);
+  color: var(--ink);
+}
+
+/* Projects: H2 on the left, "All projects" on the right of the same row */
+#work .section-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  border: 0;
+  padding: 0;
+  margin-bottom: var(--s-5);
+}
+
+/* Contact (footer): H2 on the left, the links on the right */
+.foot {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+.foot .foot-grid { margin: 0; }
+@media (min-width: 1024px) {
+  .foot {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s-5);
+    align-items: baseline;
+  }
+  .foot .foot-grid { grid-column: 2 / span 2; }
+  .foot .legal { grid-column: 1 / -1; }
+}
+
+/* No divider under the sticky header, even when scrolled */
+.top.is-stuck { box-shadow: none; }
+
+/* Work with me: the boxes start level with the title on the left */
+.whatido .whatido-intro-body > .pillars--2:first-child { margin-top: 0; }
+
+/* ==========================================================================
+   Motion, simplified: one plain fade. No blur, no slide, no rotation, no
+   letter-by-letter name. Page changes crossfade.
+   ========================================================================== */
+
+.js .reveal,
+.js :is(.hero, .page-title) .reveal {
+  transform: none;
+  filter: none;
+  transition: opacity 400ms ease;
+  transition-delay: 0ms;
+}
+.reveal.in,
+.is-loaded :is(.hero, .page-title) .reveal { transform: none; filter: none; }
+
+.js .name span {
+  transform: none;
+  filter: none;
+  transition: opacity 400ms ease;
+  transition-delay: 0ms;
+}
+.is-loaded .name span { transform: none; filter: none; }
+
+::view-transition-old(root) { animation: 180ms ease both vt-fade-out; }
+::view-transition-new(root) { animation: 180ms ease both vt-fade-in; }
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in  { from { opacity: 0; } }
+
+/* Phones: a sensible gap above the Working together band
+   (About's bottom padding and the band's top margin were stacking) */
+@media (max-width: 899px) {
+  #about.section { padding-bottom: var(--s-6); }
+  #together { margin-top: 0; }
+}
+@media (min-width: 900px) {
+  #about.section { padding-bottom: var(--s-7); }
+  #together { margin-top: 0; }
+}
+
+/* Working together: hierarchy clean-up
+   1. Focus is shown as an underline on the option title (keyboard only),
+      not a heavy box over the text.
+   2. The availability line sits tight under the CTA, as its footnote.
+   3. Open rows get room at the bottom before the next hairline. */
+.acc-item > summary:focus { outline: none; }
+.acc-item > summary:focus-visible { outline: none; }
+.acc-item > summary:focus-visible h3 {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+.acc-item > summary:focus-visible .acc-icon::before,
+.acc-item > summary:focus-visible .acc-icon::after { background: var(--highlight); }
+
+#together .together-cta { margin-top: var(--s-4); }
+#together .together-cta + .status { margin-top: 0; }
+
+.acc-body { padding-bottom: var(--s-5); }
+.acc-body p { margin-bottom: var(--s-3); }
+.acc-body p:last-child { margin-bottom: 0; }
+
+/* Name: medium weight, in the hero and in the header, on every screen */
+.name,
+.hero .name { font-weight: 500; }
+.wordmark { font-weight: 500; }
+@media (max-width: 899px) { .wordmark { font-weight: 500; } }
+
+/* Hero intro: slightly tighter tracking for a slimmer, more refined texture */
+.hero-blurb .bio { letter-spacing: -0.02em; }
+
+/* ==========================================================================
+   Tracking: all reading text sits slightly tight at -0.02em (a slimmer,
+   more refined texture). Zero-specificity :where() so anything with its own
+   tracking keeps it: headings and the name are tighter still, and the
+   Space Mono caps labels stay positively tracked.
+   ========================================================================== */
+:root { --track-text: -0.02em; }
+:where(p, li, a, button, summary, dt, dd, blockquote, figcaption, label) {
+  letter-spacing: var(--track-text);
+}
+/* H4s and the small-bold AI note title follow the text tracking too */
+.card .row h3,
+.ways-list h4,
+.whatido-list h3,
+.ai-note summary .mono { letter-spacing: var(--track-text); }
+
+/* What I do boxes: square. Each box is at least as tall as it is wide
+   (container units, so the width never grows past its column); if the text
+   needs more room, all three grow together and stay identical. */
+.whatido .pillars.pillars--2 { container-type: inline-size; }
+.whatido .pillar { min-width: 0; min-height: 100cqw; }
+@media (min-width: 720px) {
+  .whatido .pillar { min-height: calc((100cqw - var(--s-4)) / 2); }
+}

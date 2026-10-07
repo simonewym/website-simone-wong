@@ -70,9 +70,13 @@
   // Scroll-spy: on pages with [data-nav] sections (the home page), the nav
   // pill follows the section you're reading. Real page identity keeps
   // aria-current="page"; a scroll position gets aria-current="location".
-  const spied = [...document.querySelectorAll('[data-nav]')];
+  // Hidden sections (Research, Personal for now) report a top of 0, so they
+  // would always win; only follow sections that are actually on the page.
+  const spied = [...document.querySelectorAll('[data-nav]')].filter((s) => !s.hidden);
   const navLinks = [...document.querySelectorAll('.nav a')];
-  if (spied.length && navLinks.length) {
+  // Inner pages only have the footer to follow, so they keep their
+  // aria-current="page" instead.
+  if (spied.length > 1 && navLinks.length) {
     let current = null;
     const update = () => {
       const line = window.innerHeight * 0.4;
@@ -80,6 +84,10 @@
       for (const s of spied) {
         if (s.getBoundingClientRect().top <= line) active = s;
       }
+      // The footer is short and can never reach the line: at the very
+      // bottom of the page, it's the one you're reading.
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom) active = spied[spied.length - 1];
       const href = active.dataset.nav;
       if (href === current) return;
       current = href;
@@ -94,6 +102,20 @@
     window.addEventListener('resize', update, { passive: true });
     document.addEventListener('visibilitychange', update);
     update();
+  }
+
+  // Sticky header: on the home page the small "Simone Wong" fades in once
+  // the big hero name has scrolled out of view, so the name never shows twice.
+  const header = document.querySelector('.top');
+  if (header) {
+    const heroName = document.querySelector('.hero .name');
+    if (heroName && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => {
+        header.classList.toggle('show-name', !e.isIntersecting);
+      }, { rootMargin: '-64px 0px 0px 0px' }).observe(heroName);
+    } else {
+      header.classList.add('show-name');
+    }
   }
 
   // Phone menu: the nav folds into a dropdown under the Menu button.
