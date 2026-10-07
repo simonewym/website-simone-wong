@@ -2824,3 +2824,15 @@ body { line-height: var(--lh-text); }
 @media (min-width: 900px) {
   .hero-photo { max-width: 440px; }
 }
+
+/* Hero name: a little smaller, in regular weight (400) */
+@media (min-width: 900px) {
+  .hero .name { font-size: clamp(2.25rem, 5vw, 4.25rem); }
+}
+.name,
+.hero .name { font-weight: 400; letter-spacing: -0.055em; }
+
+/* Hero photo on desktop: smaller still, at most 380px wide (about 380 x 475) */
+@media (min-width: 900px) {
+  .hero-photo { max-width: 380px; }
+}
